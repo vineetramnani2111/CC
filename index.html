@@ -8,13 +8,14 @@
 
   <style>
     :root {
-      --axa-red: #ff1721;
-      --axa-navy: #071a49;
-      --axa-blue: #0a2a66;
-      --ink: #111827;
+      --red: #ff1721;
+      --red-dark: #d90710;
+      --navy: #071a49;
+      --navy-2: #0d2a66;
+      --text: #14213d;
       --muted: #68758a;
-      --light: #f4f6f8;
-      --border: #dfe4eb;
+      --light: #f5f7fa;
+      --border: #e2e7ee;
       --white: #ffffff;
       --success: #16a34a;
     }
@@ -27,7 +28,6 @@
     body {
       margin: 0;
       padding: 0;
-      width: 100%;
       min-height: 100%;
       font-family:
         Inter,
@@ -37,208 +37,181 @@
         Roboto,
         Arial,
         sans-serif;
-      background: var(--light);
-      color: var(--ink);
+      background:
+        radial-gradient(
+          circle at 85% 10%,
+          rgba(255, 23, 33, 0.06),
+          transparent 30%
+        ),
+        var(--light);
+      color: var(--text);
     }
 
     body {
-      position: relative;
-      overflow-x: hidden;
+      min-height: 100vh;
     }
 
-    /* =========================================
-       BACKGROUND BRAND ELEMENT
-       ========================================= */
-
-    .brand-background {
-      position: fixed;
-      right: -100px;
-      top: 130px;
-
-      width: 600px;
-      height: 600px;
-
-      background-image: url("brand-mark.png");
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 330px;
-
-      opacity: 0.035;
-
-      pointer-events: none;
-      z-index: 0;
-      transform: rotate(-8deg);
+    button,
+    textarea {
+      font: inherit;
     }
 
-    /* =========================================
+    /* =========================
        HEADER
-       ========================================= */
+       ========================= */
 
     header {
-      height: 76px;
-
-      background: rgba(255, 255, 255, 0.97);
+      height: 72px;
+      background: rgba(255, 255, 255, 0.96);
       border-bottom: 1px solid var(--border);
 
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      padding: 0 48px;
+      padding: 0 42px;
 
-      position: relative;
-      z-index: 10;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+
+      backdrop-filter: blur(12px);
     }
 
-    .header-left {
+    .brand {
       display: flex;
       align-items: center;
-      gap: 22px;
+      gap: 14px;
     }
 
-    .brand-mark-small {
-      width: 42px;
-      height: 42px;
-
+    .brand-logo {
+      width: 38px;
+      height: 38px;
       object-fit: contain;
-
-      border-radius: 3px;
     }
 
-    .header-divider {
+    .brand-divider {
       width: 1px;
-      height: 30px;
-      background: #d8dde5;
+      height: 28px;
+      background: #d8dee8;
     }
 
-    .company-name {
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: -0.2px;
-      color: var(--axa-navy);
+    .brand-company {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--navy);
     }
 
-    .product-name {
-      font-size: 15px;
+    .brand-product {
+      font-size: 13px;
       color: var(--muted);
+      margin-top: 2px;
     }
 
-    .internal-label {
-      border: 1px solid #d6dce5;
-      border-radius: 6px;
+    .internal-badge {
+      border: 1px solid #d9dfe7;
+      background: #fafbfd;
+      color: #657086;
 
-      padding: 9px 15px;
+      padding: 8px 13px;
+      border-radius: 7px;
 
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.7px;
-
-      color: #596579;
-      background: #fafbfc;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
     }
 
-    /* =========================================
+    /* =========================
        MAIN
-       ========================================= */
+       ========================= */
 
     main {
-      width: min(1180px, calc(100% - 48px));
-
-      margin: 0 auto;
-
-      position: relative;
-      z-index: 2;
+      width: min(1180px, calc(100% - 40px));
+      margin: auto;
     }
 
     .hero {
-      padding: 62px 0 34px;
+      padding: 55px 0 30px;
     }
 
     .eyebrow {
-      color: var(--axa-red);
-
-      font-size: 12px;
-      font-weight: 800;
-
+      color: var(--red);
+      font-size: 11px;
+      font-weight: 900;
       letter-spacing: 1.8px;
       text-transform: uppercase;
-
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     h1 {
       margin: 0;
-
-      font-size: clamp(38px, 5vw, 62px);
-      line-height: 1.03;
-
-      letter-spacing: -2.8px;
-
-      color: var(--axa-navy);
-      font-weight: 750;
+      font-size: clamp(40px, 5vw, 64px);
+      line-height: 1;
+      letter-spacing: -3px;
+      color: var(--navy);
     }
 
     h1 span {
-      color: var(--axa-red);
+      color: var(--red);
     }
 
-    .hero-description {
-      max-width: 730px;
-
+    .hero-text {
+      max-width: 720px;
       margin-top: 18px;
 
-      font-size: 17px;
+      font-size: 16px;
       line-height: 1.65;
-
       color: var(--muted);
     }
 
-    /* =========================================
-       CHAT APPLICATION
-       ========================================= */
+    /* =========================
+       CHAT CARD
+       ========================= */
 
-    .chat-shell {
+    .chat-card {
       background: var(--white);
 
       border: 1px solid var(--border);
-      border-radius: 14px;
-
-      box-shadow:
-        0 20px 50px rgba(7, 26, 73, 0.08),
-        0 2px 8px rgba(7, 26, 73, 0.04);
+      border-radius: 18px;
 
       overflow: hidden;
 
-      margin-bottom: 50px;
+      box-shadow:
+        0 25px 70px rgba(7, 26, 73, 0.08),
+        0 5px 15px rgba(7, 26, 73, 0.04);
+
+      margin-bottom: 40px;
     }
 
-    .chat-header {
-      min-height: 82px;
+    /* =========================
+       CHAT HEADER
+       ========================= */
 
-      padding: 18px 24px;
+    .chat-top {
+      min-height: 78px;
 
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      border-bottom: 1px solid var(--border);
+      padding: 16px 22px;
 
-      background: #ffffff;
+      border-bottom: 1px solid var(--border);
     }
 
-    .assistant-info {
+    .assistant {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 13px;
     }
 
-    .assistant-mark {
-      width: 45px;
-      height: 45px;
+    .assistant-logo {
+      width: 44px;
+      height: 44px;
 
-      border-radius: 7px;
+      border-radius: 10px;
 
-      background: var(--axa-navy);
+      background: var(--navy);
 
       display: flex;
       align-items: center;
@@ -247,26 +220,25 @@
       overflow: hidden;
     }
 
-    .assistant-mark img {
-      width: 29px;
-      height: 29px;
+    .assistant-logo img {
+      width: 28px;
+      height: 28px;
       object-fit: contain;
     }
 
-    .assistant-title {
-      font-size: 15px;
-      font-weight: 750;
-
-      color: var(--axa-navy);
+    .assistant-name {
+      color: var(--navy);
+      font-size: 14px;
+      font-weight: 800;
     }
 
     .assistant-status {
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 6px;
 
-      font-size: 12px;
       color: var(--muted);
+      font-size: 11px;
 
       margin-top: 4px;
     }
@@ -274,25 +246,23 @@
     .status-dot {
       width: 7px;
       height: 7px;
-
       border-radius: 50%;
-
       background: var(--success);
     }
 
-    .chat-context {
-      color: #8a95a7;
-      font-size: 12px;
+    .chat-label {
+      color: #8792a5;
+      font-size: 11px;
     }
 
-    /* =========================================
+    /* =========================
        MESSAGES
-       ========================================= */
+       ========================= */
 
     .messages {
       height: 470px;
 
-      padding: 30px;
+      padding: 28px;
 
       overflow-y: auto;
 
@@ -300,22 +270,21 @@
         linear-gradient(
           180deg,
           #ffffff 0%,
-          #fbfcfd 100%
+          #fafbfd 100%
         );
     }
 
     .message {
       max-width: 760px;
-
       margin-bottom: 22px;
 
-      animation: messageIn 0.2s ease-out;
+      animation: messageIn 0.18s ease-out;
     }
 
     @keyframes messageIn {
       from {
         opacity: 0;
-        transform: translateY(5px);
+        transform: translateY(6px);
       }
 
       to {
@@ -324,23 +293,17 @@
       }
     }
 
-    .message.bot {
-      margin-right: auto;
-    }
-
     .message.user {
       margin-left: auto;
       max-width: 680px;
     }
 
     .message-label {
-      font-size: 10px;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.8px;
 
-      font-weight: 800;
-
-      letter-spacing: 0.9px;
-
-      color: #718096;
+      color: #788499;
 
       margin: 0 0 7px 3px;
 
@@ -352,151 +315,194 @@
     }
 
     .bubble {
-      padding: 17px 20px;
+      padding: 16px 18px;
 
-      border-radius: 10px;
+      border-radius: 12px;
 
       font-size: 14px;
-
       line-height: 1.65;
+
+      white-space: pre-wrap;
+      word-break: break-word;
     }
 
     .message.bot .bubble {
-      background: #ffffff;
-
+      background: white;
       border: 1px solid var(--border);
-
       color: #243248;
     }
 
     .message.user .bubble {
-      background: var(--axa-navy);
-
+      background: var(--navy);
       color: white;
+      border: 1px solid var(--navy);
 
-      border: 1px solid var(--axa-navy);
-
-      border-bottom-right-radius: 3px;
+      border-bottom-right-radius: 4px;
     }
 
-    .message.bot .bubble strong {
-      color: var(--axa-navy);
+    /* =========================
+       TYPING
+       ========================= */
+
+    .typing {
+      display: none;
+      align-items: center;
+      gap: 5px;
+
+      width: fit-content;
+
+      padding: 12px 15px;
+
+      background: white;
+      border: 1px solid var(--border);
+
+      border-radius: 10px;
+
+      margin-bottom: 18px;
     }
 
-    /* =========================================
+    .typing.show {
+      display: flex;
+    }
+
+    .typing span {
+      width: 6px;
+      height: 6px;
+
+      background: #8c98aa;
+
+      border-radius: 50%;
+
+      animation: typing 1.2s infinite;
+    }
+
+    .typing span:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    .typing span:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    @keyframes typing {
+      0%, 60%, 100% {
+        opacity: 0.25;
+        transform: translateY(0);
+      }
+
+      30% {
+        opacity: 1;
+        transform: translateY(-3px);
+      }
+    }
+
+    /* =========================
        QUICK QUESTIONS
-       ========================================= */
+       ========================= */
 
-    .quick-section {
-      padding: 0 30px 20px;
+    .quick-area {
+      padding: 18px 25px 20px;
 
-      background: #fbfcfd;
+      border-top: 1px solid var(--border);
+
+      background: #fafbfd;
     }
 
     .quick-title {
-      font-size: 11px;
-
-      font-weight: 800;
-
-      letter-spacing: 0.8px;
-
-      text-transform: uppercase;
-
       color: #7a8699;
 
-      margin-bottom: 11px;
+      font-size: 10px;
+      font-weight: 900;
+
+      letter-spacing: 0.9px;
+      text-transform: uppercase;
+
+      margin-bottom: 10px;
     }
 
     .quick-buttons {
       display: flex;
       flex-wrap: wrap;
-      gap: 9px;
+      gap: 8px;
     }
 
     .quick-button {
+      border: 1px solid #d9dfe8;
       background: white;
 
-      border: 1px solid #d9dfe7;
+      border-radius: 8px;
 
-      border-radius: 7px;
+      padding: 9px 12px;
 
-      padding: 9px 13px;
-
-      color: #233452;
+      color: #263754;
 
       font-size: 12px;
 
       cursor: pointer;
 
-      transition: all 0.15s ease;
+      transition: 0.15s ease;
     }
 
     .quick-button:hover {
-      border-color: var(--axa-red);
-
-      color: var(--axa-red);
-
-      background: #fffafa;
+      border-color: var(--red);
+      color: var(--red);
+      transform: translateY(-1px);
     }
 
-    /* =========================================
-       INPUT AREA
-       ========================================= */
+    /* =========================
+       INPUT
+       ========================= */
 
     .input-area {
-      padding: 20px 24px 22px;
+      padding: 18px 22px 20px;
 
       border-top: 1px solid var(--border);
 
       background: white;
     }
 
-    .input-wrapper {
+    .input-box {
       display: flex;
-
-      align-items: center;
-
+      align-items: flex-end;
       gap: 10px;
+
+      padding: 7px 7px 7px 15px;
 
       background: #f6f8fa;
 
-      border: 1px solid #dce2e9;
+      border: 1px solid #dce2ea;
 
-      border-radius: 9px;
+      border-radius: 11px;
 
-      padding: 6px 7px 6px 16px;
-
-      transition: border 0.2s;
+      transition: 0.2s;
     }
 
-    .input-wrapper:focus-within {
-      border-color: #9aa8bc;
-
+    .input-box:focus-within {
       background: white;
+      border-color: #a5b0c1;
+      box-shadow: 0 0 0 3px rgba(7, 26, 73, 0.04);
     }
 
     #userInput {
       flex: 1;
 
+      min-height: 42px;
+      max-height: 120px;
+
+      padding: 10px 0;
+
       border: none;
-
       outline: none;
-
-      background: transparent;
 
       resize: none;
 
-      min-height: 42px;
+      background: transparent;
 
-      max-height: 120px;
-
-      padding: 11px 0;
-
-      font-family: inherit;
+      color: var(--text);
 
       font-size: 14px;
 
-      color: var(--ink);
+      line-height: 1.5;
     }
 
     #userInput::placeholder {
@@ -507,137 +513,126 @@
       width: 43px;
       height: 43px;
 
+      flex-shrink: 0;
+
       border: none;
+      border-radius: 9px;
 
-      border-radius: 7px;
-
-      background: var(--axa-red);
-
+      background: var(--red);
       color: white;
 
       cursor: pointer;
 
       font-size: 18px;
+      font-weight: 700;
 
-      transition:
-        transform 0.15s,
-        background 0.15s;
+      transition: 0.15s;
     }
 
     #sendButton:hover {
-      background: #dc0710;
-
+      background: var(--red-dark);
       transform: translateY(-1px);
     }
 
-    #sendButton:active {
-      transform: translateY(0);
+    #sendButton:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
     }
 
     .input-note {
-      margin-top: 9px;
-
-      font-size: 10px;
+      margin-top: 8px;
 
       color: #8b96a8;
+
+      font-size: 10px;
     }
 
-    /* =========================================
+    /* =========================
        FOOTER
-       ========================================= */
+       ========================= */
 
     footer {
       text-align: center;
 
-      padding: 5px 0 35px;
-
-      font-size: 11px;
+      padding: 0 0 35px;
 
       color: #8994a6;
+
+      font-size: 10px;
     }
 
-    /* =========================================
+    /* =========================
        MOBILE
-       ========================================= */
+       ========================= */
 
     @media (max-width: 700px) {
 
       header {
-        height: 66px;
-
-        padding: 0 18px;
+        height: 64px;
+        padding: 0 15px;
       }
 
-      .header-left {
-        gap: 12px;
-      }
-
-      .brand-mark-small {
-        width: 34px;
-        height: 34px;
-      }
-
-      .header-divider {
-        height: 24px;
-      }
-
-      .company-name {
-        font-size: 14px;
-      }
-
-      .product-name {
+      .brand-product {
         display: none;
       }
 
-      .internal-label {
-        font-size: 9px;
-        padding: 7px 9px;
+      .brand-divider {
+        height: 22px;
+      }
+
+      .brand-company {
+        font-size: 14px;
+      }
+
+      .internal-badge {
+        font-size: 8px;
+        padding: 7px 8px;
       }
 
       main {
-        width: calc(100% - 24px);
+        width: calc(100% - 20px);
       }
 
       .hero {
-        padding: 38px 4px 25px;
+        padding: 38px 3px 24px;
       }
 
       h1 {
-        font-size: 39px;
-        letter-spacing: -1.7px;
+        font-size: 40px;
+        letter-spacing: -2px;
       }
 
-      .hero-description {
+      .hero-text {
         font-size: 14px;
-        line-height: 1.55;
       }
 
-      .chat-header {
-        padding: 15px 16px;
+      .chat-top {
+        padding: 14px 15px;
       }
 
-      .chat-context {
+      .chat-label {
         display: none;
       }
 
       .messages {
         height: 55vh;
         min-height: 390px;
-
         padding: 20px 15px;
       }
 
-      .message {
+      .message,
+      .message.user {
         max-width: 92%;
       }
 
       .bubble {
-        padding: 14px 15px;
         font-size: 13px;
+        padding: 14px 15px;
       }
 
-      .quick-section {
-        padding: 0 15px 16px;
+      .quick-area {
+        padding: 15px;
       }
 
       .quick-buttons {
@@ -649,16 +644,7 @@
       }
 
       .input-area {
-        padding: 15px;
-      }
-
-      .brand-background {
-        width: 400px;
-        height: 400px;
-
-        right: -170px;
-
-        opacity: 0.025;
+        padding: 14px;
       }
     }
   </style>
@@ -666,35 +652,33 @@
 
 <body>
 
-  <!-- Subtle AXA brand background -->
-  <div class="brand-background"></div>
-
   <!-- ================= HEADER ================= -->
 
   <header>
 
-    <div class="header-left">
+    <div class="brand">
 
-      <!-- YOUR PROVIDED IMAGE -->
       <img
         src="brand-mark.png"
-        class="brand-mark-small"
+        class="brand-logo"
         alt="AXA XL"
       />
 
-      <div class="header-divider"></div>
+      <div class="brand-divider"></div>
 
-      <div class="company-name">
-        AXA XL
-      </div>
+      <div>
+        <div class="brand-company">
+          AXA XL
+        </div>
 
-      <div class="product-name">
-        Credit Control Assistant
+        <div class="brand-product">
+          Credit Control Assistant
+        </div>
       </div>
 
     </div>
 
-    <div class="internal-label">
+    <div class="internal-badge">
       INTERNAL USE
     </div>
 
@@ -715,10 +699,10 @@
         Credit Control <span>Buddy</span>
       </h1>
 
-      <div class="hero-description">
-        Your internal AI assistant for credit control, insurance,
-        lines of business and related AXA XL processes.
-        Ask a question and get concise, conversational guidance.
+      <div class="hero-text">
+        Your AI assistant for credit control, insurance,
+        receivables, collections and related insurance
+        terminology. Ask a question and get a concise answer.
       </div>
 
     </section>
@@ -726,49 +710,39 @@
 
     <!-- ================= CHAT ================= -->
 
-    <section class="chat-shell">
+    <section class="chat-card">
 
-      <!-- Chat header -->
+      <div class="chat-top">
 
-      <div class="chat-header">
+        <div class="assistant">
 
-        <div class="assistant-info">
-
-          <div class="assistant-mark">
-
-            <img
-              src="brand-mark.png"
-              alt=""
-            />
-
+          <div class="assistant-logo">
+            <img src="brand-mark.png" alt="" />
           </div>
 
           <div>
 
-            <div class="assistant-title">
+            <div class="assistant-name">
               Credit Control Buddy
             </div>
 
             <div class="assistant-status">
-
               <span class="status-dot"></span>
-
-              Assistant available
-
+              AI assistant available
             </div>
 
           </div>
 
         </div>
 
-        <div class="chat-context">
+        <div class="chat-label">
           AXA XL Internal Assistant
         </div>
 
       </div>
 
 
-      <!-- Messages -->
+      <!-- MESSAGES -->
 
       <div
         class="messages"
@@ -782,29 +756,35 @@
           </div>
 
           <div class="bubble">
+            Hello. I'm your Credit Control Buddy.
 
-            Hello. I'm your <strong>Credit Control Buddy</strong>.
-
-            <br><br>
-
-            I can help with questions related to
-            <strong>credit control, insurance, lines of business,
-            receivables and related processes.</strong>
-
-            <br><br>
+            I can help with credit control, insurance,
+            receivables, collections, premiums,
+            lines of business and related terminology.
 
             What would you like to know?
-
           </div>
 
+        </div>
+
+
+        <!-- TYPING INDICATOR -->
+
+        <div
+          class="typing"
+          id="typing"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
 
       </div>
 
 
-      <!-- Suggested questions -->
+      <!-- QUICK QUESTIONS -->
 
-      <div class="quick-section">
+      <div class="quick-area">
 
         <div class="quick-title">
           Suggested questions
@@ -816,7 +796,7 @@
             class="quick-button"
             onclick="askQuestion('What is credit control in insurance?')"
           >
-            What is credit control in insurance?
+            What is credit control?
           </button>
 
           <button
@@ -830,14 +810,14 @@
             class="quick-button"
             onclick="askQuestion('What is an overdue receivable?')"
           >
-            What is an overdue receivable?
+            Overdue receivable
           </button>
 
           <button
             class="quick-button"
             onclick="askQuestion('Explain the credit control process.')"
           >
-            Explain the credit control process
+            Credit control process
           </button>
 
         </div>
@@ -845,16 +825,16 @@
       </div>
 
 
-      <!-- Input -->
+      <!-- INPUT -->
 
       <div class="input-area">
 
-        <div class="input-wrapper">
+        <div class="input-box">
 
           <textarea
             id="userInput"
-            placeholder="Ask Credit Control Buddy a question..."
             rows="1"
+            placeholder="Ask Credit Control Buddy a question..."
             onkeydown="handleKey(event)"
           ></textarea>
 
@@ -869,13 +849,14 @@
         </div>
 
         <div class="input-note">
-          For internal AXA XL use. Responses should be verified against
-          applicable internal policies and documentation.
+          For internal use. Verify responses against applicable
+          internal policies and documentation.
         </div>
 
       </div>
 
     </section>
+
 
     <footer>
       Credit Control Buddy · AXA XL Internal Tool
@@ -890,11 +871,29 @@
 
     const messages = document.getElementById("messages");
     const input = document.getElementById("userInput");
+    const sendButton = document.getElementById("sendButton");
+    const typing = document.getElementById("typing");
 
+    /*
+      Conversation history.
+
+      This is sent to /api/chat so the AI can
+      understand previous messages in the conversation.
+    */
+
+    const conversationHistory = [];
+
+
+    /* =========================
+       ENTER KEY
+       ========================= */
 
     function handleKey(event) {
 
-      if (event.key === "Enter" && !event.shiftKey) {
+      if (
+        event.key === "Enter" &&
+        !event.shiftKey
+      ) {
 
         event.preventDefault();
 
@@ -905,6 +904,10 @@
     }
 
 
+    /* =========================
+       QUICK QUESTION
+       ========================= */
+
     function askQuestion(question) {
 
       input.value = question;
@@ -914,16 +917,24 @@
     }
 
 
+    /* =========================
+       ADD MESSAGE
+       ========================= */
+
     function addMessage(type, text) {
 
-      const wrapper = document.createElement("div");
+      const wrapper =
+        document.createElement("div");
 
-      wrapper.className = "message " + type;
+      wrapper.className =
+        "message " + type;
 
 
-      const label = document.createElement("div");
+      const label =
+        document.createElement("div");
 
-      label.className = "message-label";
+      label.className =
+        "message-label";
 
       label.textContent =
         type === "user"
@@ -931,127 +942,196 @@
           : "Credit Control Buddy";
 
 
-      const bubble = document.createElement("div");
+      const bubble =
+        document.createElement("div");
 
-      bubble.className = "bubble";
+      bubble.className =
+        "bubble";
 
       bubble.textContent = text;
 
 
       wrapper.appendChild(label);
-
       wrapper.appendChild(bubble);
 
-      messages.appendChild(wrapper);
+      messages.insertBefore(
+        wrapper,
+        typing
+      );
 
 
-      messages.scrollTop = messages.scrollHeight;
+      messages.scrollTop =
+        messages.scrollHeight;
 
     }
 
 
-    function sendMessage() {
+    /* =========================
+       SEND MESSAGE
+       ========================= */
 
-      const question = input.value.trim();
+    async function sendMessage() {
 
-      if (!question) return;
+      const question =
+        input.value.trim();
 
 
-      addMessage("user", question);
+      if (!question) {
+        return;
+      }
+
+
+      /*
+        Show user message
+      */
+
+      addMessage(
+        "user",
+        question
+      );
+
+
+      /*
+        Save user message
+      */
+
+      conversationHistory.push({
+        role: "user",
+        content: question
+      });
+
 
       input.value = "";
 
 
       /*
-        TEMPORARY RESPONSE
-
-        This will be replaced with the Hugging Face
-        backend once the AI API is connected.
+        Disable send button
       */
 
-      setTimeout(() => {
-
-        addMessage(
-          "bot",
-          "I'm currently being connected to the AXA XL insurance and credit-control knowledge base. Once the knowledge service is connected, I'll provide concise answers based on the approved information available to me."
-        );
-
-      }, 500);
-
-    }
+      sendButton.disabled = true;
 
 
-    /*
-    =====================================================
-    HUGGING FACE CONNECTION
-    =====================================================
+      /*
+        Show typing indicator
+      */
 
-    DO NOT put your Hugging Face API token directly
-    into this GitHub Pages JavaScript.
+      typing.classList.add("show");
 
-    GitHub Pages is public, so the token would be exposed.
-
-    Instead the frontend should eventually call:
-
-        /api/chat
-
-    Your backend can then securely call Hugging Face.
-
-    Example structure:
-
-        Frontend
-           ↓
-        /api/chat
-           ↓
-        Your backend
-           ↓
-        Hugging Face
-           ↓
-        AI response
-           ↓
-        Credit Control Buddy
-
-    =====================================================
-    */
-
-
-    async function askAI(question) {
 
       try {
 
-        const response = await fetch("/api/chat", {
+        const answer =
+          await askAI(question);
 
-          method: "POST",
 
-          headers: {
-            "Content-Type": "application/json"
-          },
+        /*
+          Save AI response
+        */
 
-          body: JSON.stringify({
-            message: question
-          })
-
+        conversationHistory.push({
+          role: "assistant",
+          content: answer
         });
 
 
-        if (!response.ok) {
+        /*
+          Display AI response
+        */
 
-          throw new Error("AI service unavailable");
-
-        }
-
-
-        const data = await response.json();
-
-        return data.answer;
+        addMessage(
+          "bot",
+          answer
+        );
 
       }
 
       catch (error) {
 
-        return "I couldn't access the knowledge service right now. Please try again later.";
+        console.error(error);
+
+
+        addMessage(
+          "bot",
+          "Sorry, I couldn't connect to the AI service right now. Please try again."
+        );
 
       }
+
+      finally {
+
+        typing.classList.remove("show");
+
+        sendButton.disabled = false;
+
+        input.focus();
+
+        messages.scrollTop =
+          messages.scrollHeight;
+
+      }
+
+    }
+
+
+    /* =========================
+       HUGGING FACE API
+       ========================= */
+
+    async function askAI(question) {
+
+      const response =
+        await fetch(
+          "/api/chat",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body: JSON.stringify({
+
+              message: question,
+
+              history:
+                conversationHistory.slice(-8)
+
+            })
+
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        console.error(
+          "API error:",
+          data
+        );
+
+        throw new Error(
+          data.error ||
+          "AI service unavailable"
+        );
+
+      }
+
+
+      if (!data.answer) {
+
+        throw new Error(
+          "AI returned no answer"
+        );
+
+      }
+
+
+      return data.answer;
 
     }
 
