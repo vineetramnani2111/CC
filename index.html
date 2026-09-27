@@ -1,929 +1,958 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Credit Control Buddy | AXA XL</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        :root {
-            --navy: #111827;
-            --dark-navy: #0b1220;
-            --text: #1f2937;
-            --muted: #6b7280;
-            --light: #f5f6f8;
-            --border: #e3e6eb;
-            --white: #ffffff;
-            --axa-red: #ff1721;
-        }
-
-        body {
-            margin: 0;
-            font-family:
-                Inter,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                Roboto,
-                Arial,
-                sans-serif;
-
-            color: var(--text);
-            background: #f5f6f8;
-            min-height: 100vh;
-        }
-
-        /* =========================
-           BACKGROUND AXA WATERMARK
-        ========================= */
-
-        body::before {
-            content: "";
-            position: fixed;
-
-            width: 520px;
-            height: 520px;
-
-            right: -170px;
-            bottom: -170px;
-
-            background-image: url("axa-logo.png");
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Credit Control Buddy | AXA XL</title>
+
+<style>
+
+:root {
+    --axa-blue: #07194d;
+    --axa-blue-2: #0b2368;
+    --axa-red: #ff1721;
+    --white: #ffffff;
+    --off-white: #f7f7f5;
+    --text: #101828;
+    --muted: #667085;
+    --border: #dfe3ea;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text);
+    background: var(--off-white);
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    height: 88px;
+    background: var(--white);
+    border-bottom: 1px solid #e3e5e9;
 
-            opacity: 0.035;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-            pointer-events: none;
-            z-index: 0;
-        }
+    padding: 0 5%;
+}
 
-        /* =========================
-           HEADER
-        ========================= */
+.logo {
+    height: 52px;
+    width: auto;
+    object-fit: contain;
+}
 
-        .topbar {
-            height: 72px;
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
 
-            background: rgba(255, 255, 255, 0.96);
+.header-label {
+    font-size: 14px;
+    color: #4b5563;
+    letter-spacing: .3px;
+}
 
-            border-bottom: 1px solid var(--border);
+.internal {
+    border: 1px solid #d7dce5;
+    padding: 10px 16px;
+    border-radius: 3px;
 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
 
-            padding: 0 48px;
+    color: #475467;
+}
 
-            position: sticky;
-            top: 0;
+/* =========================
+   HERO
+========================= */
 
-            z-index: 10;
-        }
+.hero {
+    min-height: 470px;
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 
-        .brand-title {
-            font-size: 17px;
-            font-weight: 650;
-            letter-spacing: -0.2px;
-        }
+    background: var(--axa-blue);
 
-        .brand-divider {
-            width: 1px;
-            height: 22px;
-            background: #d8dce2;
-        }
+    overflow: hidden;
+}
 
-        .brand-subtitle {
-            font-size: 13px;
-            color: var(--muted);
-        }
+.hero-left {
+    padding: 90px 9% 80px 10%;
 
-        .internal-badge {
-            font-size: 11px;
-            font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
-            color: #4b5563;
+    position: relative;
+}
 
-            border: 1px solid #dfe2e7;
-            background: #fafafa;
+.hero-left::after {
+    content: "";
+    position: absolute;
 
-            padding: 7px 11px;
-            border-radius: 5px;
+    width: 330px;
+    height: 330px;
 
-            letter-spacing: 0.4px;
-        }
+    right: -130px;
+    bottom: -150px;
 
-        /* =========================
-           MAIN
-        ========================= */
+    border: 1px solid rgba(255,255,255,.09);
+    transform: rotate(45deg);
+}
 
-        .page {
-            position: relative;
-            z-index: 1;
+.eyebrow {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
 
-            max-width: 1180px;
-            margin: 0 auto;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 
-            padding: 54px 28px 80px;
-        }
+    margin-bottom: 28px;
+}
 
-        /* =========================
-           HERO
-        ========================= */
+.hero h1 {
+    color: white;
 
-        .hero {
-            margin-bottom: 30px;
-        }
+    font-size: clamp(48px, 5vw, 78px);
+    line-height: .98;
 
-        .eyebrow {
-            font-size: 12px;
-            font-weight: 700;
+    font-weight: 500;
+    letter-spacing: -3px;
 
-            color: var(--axa-red);
+    max-width: 700px;
+}
 
-            text-transform: uppercase;
-            letter-spacing: 1.3px;
+.hero h1 span {
+    color: #ff3340;
+}
 
-            margin-bottom: 12px;
-        }
+.hero-description {
+    color: #d9e3ff;
 
-        .hero h1 {
-            margin: 0;
+    font-size: 18px;
+    line-height: 1.6;
 
-            font-size: 38px;
-            line-height: 1.15;
+    max-width: 600px;
 
-            font-weight: 650;
+    margin-top: 30px;
+}
 
-            color: var(--dark-navy);
+/* =========================
+   HERO RIGHT / BRAND PANEL
+========================= */
 
-            letter-spacing: -1.2px;
-        }
+.hero-right {
+    background: #f4f0eb;
 
-        .hero h1 span {
-            color: var(--axa-red);
-        }
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        .hero-description {
-            max-width: 690px;
+    position: relative;
+    overflow: hidden;
+}
 
-            margin-top: 12px;
+.hero-right::before {
+    content: "";
 
-            color: #667085;
+    position: absolute;
 
-            font-size: 15px;
-            line-height: 1.65;
-        }
+    width: 420px;
+    height: 420px;
 
-        /* =========================
-           APPLICATION
-        ========================= */
+    border-radius: 50%;
 
-        .workspace {
-            background: var(--white);
+    border: 1px solid rgba(7,25,77,.12);
+}
 
-            border: 1px solid var(--border);
+.hero-right::after {
+    content: "";
 
-            border-radius: 14px;
+    position: absolute;
 
-            box-shadow:
-                0 10px 30px rgba(16, 24, 40, 0.05);
+    width: 300px;
+    height: 300px;
 
-            overflow: hidden;
-        }
+    border-radius: 50%;
 
-        /* =========================
-           CHAT HEADER
-        ========================= */
+    border: 1px solid rgba(7,25,77,.08);
+}
 
-        .chat-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+.brand-mark {
+    position: relative;
+    z-index: 2;
 
-            padding: 20px 24px;
+    width: 145px;
+    height: 145px;
 
-            border-bottom: 1px solid var(--border);
+    object-fit: contain;
 
-            background: #ffffff;
-        }
+    opacity: .96;
+}
 
-        .assistant-info {
-            display: flex;
-            align-items: center;
-            gap: 13px;
-        }
+/* =========================
+   CHAT SECTION
+========================= */
 
-        .assistant-avatar {
-            width: 42px;
-            height: 42px;
+.chat-section {
+    max-width: 1180px;
 
-            border-radius: 10px;
+    margin: -55px auto 80px;
 
-            background: var(--dark-navy);
+    position: relative;
+    z-index: 5;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+    padding: 0 24px;
+}
 
-            position: relative;
+.chat-container {
+    background: white;
 
-            box-shadow:
-                0 4px 10px rgba(15, 23, 42, 0.12);
-        }
+    border: 1px solid var(--border);
 
-        .assistant-avatar::before {
-            content: "";
+    box-shadow: 0 20px 50px rgba(0,0,0,.10);
+}
 
-            width: 18px;
-            height: 13px;
+/* CHAT HEADER */
 
-            border: 2px solid white;
+.chat-header {
+    min-height: 90px;
 
-            border-radius: 5px;
+    padding: 20px 28px;
 
-            position: absolute;
-        }
+    border-bottom: 1px solid var(--border);
 
-        .assistant-avatar::after {
-            content: "";
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
-            width: 4px;
-            height: 4px;
+.chat-title {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
 
-            background: white;
+.status-dot {
+    width: 11px;
+    height: 11px;
 
-            border-radius: 50%;
+    background: #20b26b;
 
-            position: absolute;
+    border-radius: 50%;
+}
 
-            box-shadow: 8px 0 0 white;
-        }
+.chat-name {
+    font-size: 17px;
+    font-weight: bold;
+}
 
-        .assistant-name {
-            font-size: 14px;
-            font-weight: 650;
-            color: var(--dark-navy);
-        }
+.chat-status {
+    color: #667085;
+    font-size: 13px;
+    margin-top: 4px;
+}
 
-        .assistant-status {
-            margin-top: 3px;
+.chat-right {
+    font-size: 12px;
+    color: #7b8494;
 
-            font-size: 12px;
-            color: #667085;
+    letter-spacing: .5px;
+}
 
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+/* =========================
+   CHAT BODY
+========================= */
 
-        .status-dot {
-            width: 7px;
-            height: 7px;
+.chat-body {
+    min-height: 380px;
 
-            background: #22c55e;
+    padding: 32px;
 
-            border-radius: 50%;
-        }
+    background:
+        linear-gradient(
+            rgba(255,255,255,.95),
+            rgba(255,255,255,.95)
+        );
+}
 
-        .header-label {
-            font-size: 12px;
-            color: #8a919d;
-        }
+.welcome {
+    max-width: 720px;
 
-        /* =========================
-           CHAT
-        ========================= */
+    border-left: 4px solid var(--axa-red);
 
-        .chat {
-            height: 470px;
+    padding: 4px 0 4px 22px;
 
-            padding: 28px;
+    margin-bottom: 34px;
+}
 
-            overflow-y: auto;
+.welcome-label {
+    color: var(--axa-red);
 
-            background:
-                linear-gradient(
-                    rgba(249, 250, 251, 0.88),
-                    rgba(249, 250, 251, 0.88)
-                );
-        }
+    font-size: 12px;
+    font-weight: bold;
 
-        .message {
-            display: flex;
+    letter-spacing: 1.5px;
 
-            margin-bottom: 22px;
-        }
+    text-transform: uppercase;
 
-        .message.bot {
-            justify-content: flex-start;
-        }
+    margin-bottom: 12px;
+}
 
-        .message.user {
-            justify-content: flex-end;
-        }
+.welcome h2 {
+    font-size: 27px;
+    font-weight: 500;
 
-        .bubble {
-            max-width: 72%;
+    margin-bottom: 10px;
+}
 
-            padding: 15px 17px;
+.welcome p {
+    color: #667085;
 
-            border-radius: 10px;
+    font-size: 15px;
 
-            font-size: 14px;
-            line-height: 1.6;
-        }
+    line-height: 1.6;
+}
 
-        .bot .bubble {
-            background: white;
+/* =========================
+   QUICK TOPICS
+========================= */
 
-            border: 1px solid var(--border);
+.quick-topics {
+    display: grid;
 
-            color: var(--text);
+    grid-template-columns: repeat(4, 1fr);
 
-            border-top-left-radius: 3px;
-        }
+    gap: 12px;
 
-        .user .bubble {
-            background: var(--dark-navy);
+    margin-bottom: 30px;
+}
 
-            color: white;
+.topic {
+    background: #fafafa;
 
-            border-top-right-radius: 3px;
+    border: 1px solid #e1e5ea;
 
-            box-shadow:
-                0 3px 8px rgba(15, 23, 42, 0.08);
-        }
+    padding: 18px;
 
-        .message-label {
-            display: block;
+    cursor: pointer;
 
-            font-size: 11px;
-            font-weight: 700;
+    transition: .2s ease;
+}
 
-            color: #667085;
+.topic:hover {
+    background: var(--axa-blue);
+    color: white;
 
-            margin-bottom: 5px;
+    transform: translateY(-2px);
+}
 
-            text-transform: uppercase;
+.topic-title {
+    font-size: 14px;
+    font-weight: bold;
 
-            letter-spacing: 0.4px;
-        }
+    margin-bottom: 6px;
+}
 
-        .user .message-label {
-            color: rgba(255,255,255,0.65);
-        }
+.topic-text {
+    font-size: 12px;
 
-        /* =========================
-           SUGGESTIONS
-        ========================= */
+    color: #7b8494;
 
-        .suggestions {
-            padding: 0 28px 20px;
+    line-height: 1.4;
+}
 
-            background: #f9fafb;
-        }
+.topic:hover .topic-text {
+    color: #dce5ff;
+}
 
-        .suggestion-title {
-            font-size: 11px;
+/* =========================
+   MESSAGES
+========================= */
 
-            font-weight: 700;
+.messages {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 
-            color: #8a919d;
+    margin-bottom: 24px;
+}
 
-            text-transform: uppercase;
+.message {
+    max-width: 78%;
 
-            letter-spacing: 0.7px;
+    padding: 16px 18px;
 
-            margin-bottom: 10px;
-        }
+    font-size: 15px;
 
-        .suggestion-list {
-            display: flex;
+    line-height: 1.55;
+}
 
-            flex-wrap: wrap;
+.bot-message {
+    background: #f5f6f8;
 
-            gap: 8px;
-        }
+    border-left: 3px solid var(--axa-red);
 
-        .suggestion {
-            border: 1px solid #dfe3e8;
+    align-self: flex-start;
+}
 
-            background: white;
+.user-message {
+    background: var(--axa-blue);
 
-            color: #344054;
+    color: white;
 
-            border-radius: 7px;
+    align-self: flex-end;
+}
 
-            padding: 9px 12px;
+/* =========================
+   INPUT
+========================= */
 
-            font-size: 12px;
+.chat-input-area {
+    border-top: 1px solid var(--border);
 
-            cursor: pointer;
+    padding: 20px 24px;
 
-            transition: all 0.15s ease;
-        }
+    display: flex;
 
-        .suggestion:hover {
-            border-color: #aeb4bd;
+    gap: 12px;
+}
 
-            background: #f8fafc;
-        }
+.chat-input {
+    flex: 1;
 
-        /* =========================
-           INPUT
-        ========================= */
+    min-height: 52px;
 
-        .input-area {
-            border-top: 1px solid var(--border);
+    border: 1px solid #cfd5df;
 
-            background: white;
+    padding: 0 18px;
 
-            padding: 18px 20px;
+    font-size: 15px;
 
-            display: flex;
+    outline: none;
+}
 
-            gap: 10px;
-        }
+.chat-input:focus {
+    border-color: var(--axa-blue);
+}
 
-        .input-area input {
-            flex: 1;
+.send-button {
+    min-width: 115px;
 
-            height: 48px;
+    border: none;
 
-            border: 1px solid #d9dde4;
+    background: var(--axa-red);
 
-            border-radius: 8px;
+    color: white;
 
-            padding: 0 15px;
+    font-size: 14px;
+    font-weight: bold;
 
-            font-size: 14px;
+    cursor: pointer;
 
-            outline: none;
+    transition: .2s;
+}
 
-            color: var(--text);
+.send-button:hover {
+    background: #d90f18;
+}
 
-            transition: border 0.15s ease;
-        }
+/* =========================
+   FOOTER
+========================= */
 
-        .input-area input:focus {
-            border-color: #98a2b3;
+.footer {
+    background: var(--axa-blue);
 
-            box-shadow:
-                0 0 0 3px rgba(17, 24, 39, 0.04);
-        }
+    color: #d7def4;
 
-        .input-area button {
-            height: 48px;
+    padding: 30px 5%;
 
-            padding: 0 22px;
+    display: flex;
 
-            border: none;
+    justify-content: space-between;
 
-            border-radius: 8px;
+    font-size: 12px;
+}
 
-            background: var(--dark-navy);
+.footer strong {
+    color: white;
+}
 
-            color: white;
+/* =========================
+   MOBILE
+========================= */
 
-            font-size: 13px;
+@media (max-width: 850px) {
 
-            font-weight: 650;
+    .header {
+        height: 72px;
+        padding: 0 20px;
+    }
 
-            cursor: pointer;
+    .logo {
+        height: 42px;
+    }
 
-            transition: background 0.15s ease;
-        }
+    .header-label {
+        display: none;
+    }
 
-        .input-area button:hover {
-            background: #1d2939;
-        }
+    .internal {
+        padding: 8px 10px;
+        font-size: 9px;
+    }
 
-        /* =========================
-           FOOTER
-        ========================= */
+    .hero {
+        grid-template-columns: 1fr;
 
-        .footer {
-            margin-top: 18px;
+        min-height: auto;
+    }
 
-            display: flex;
-            justify-content: space-between;
+    .hero-left {
+        padding: 70px 28px 100px;
+    }
 
-            color: #98a2b3;
+    .hero h1 {
+        font-size: 52px;
+        letter-spacing: -2px;
+    }
 
-            font-size: 11px;
-        }
+    .hero-right {
+        height: 230px;
+    }
 
-        /* =========================
-           MOBILE
-        ========================= */
+    .brand-mark {
+        width: 100px;
+        height: 100px;
+    }
 
-        @media (max-width: 700px) {
+    .chat-section {
+        margin-top: -35px;
 
-            .topbar {
-                height: 64px;
+        padding: 0 14px;
+    }
 
-                padding: 0 18px;
-            }
+    .chat-body {
+        padding: 22px;
+    }
 
-            .brand-subtitle,
-            .brand-divider {
-                display: none;
-            }
+    .quick-topics {
+        grid-template-columns: 1fr 1fr;
+    }
 
-            .brand-title {
-                font-size: 15px;
-            }
+    .chat-header {
+        padding: 18px;
+    }
 
-            .internal-badge {
-                font-size: 9px;
-                padding: 6px 8px;
-            }
+    .chat-right {
+        display: none;
+    }
 
-            .page {
-                padding: 30px 14px 50px;
-            }
+    .chat-input-area {
+        padding: 14px;
 
-            .hero h1 {
-                font-size: 30px;
-            }
+        flex-direction: column;
+    }
 
-            .hero-description {
-                font-size: 14px;
-            }
+    .chat-input {
+        min-height: 52px;
+    }
 
-            .chat-header {
-                padding: 16px;
-            }
+    .send-button {
+        height: 48px;
+    }
 
-            .header-label {
-                display: none;
-            }
+    .message {
+        max-width: 90%;
+    }
 
-            .chat {
-                height: 58vh;
+    .footer {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
 
-                min-height: 390px;
+@media (max-width: 500px) {
 
-                padding: 18px;
-            }
+    .hero h1 {
+        font-size: 43px;
+    }
 
-            .bubble {
-                max-width: 88%;
+    .hero-description {
+        font-size: 16px;
+    }
 
-                font-size: 13px;
-            }
+    .quick-topics {
+        grid-template-columns: 1fr;
+    }
 
-            .suggestions {
-                padding: 0 16px 16px;
-            }
+    .welcome h2 {
+        font-size: 23px;
+    }
+}
 
-            .suggestion {
-                font-size: 11px;
-            }
-
-            .input-area {
-                padding: 12px;
-            }
-
-            .input-area button {
-                padding: 0 16px;
-            }
-
-            .footer {
-                flex-direction: column;
-                gap: 5px;
-            }
-        }
-    </style>
+</style>
 </head>
 
 <body>
 
-    <!-- =========================
-         HEADER
-    ========================= -->
+<!-- =========================
+     HEADER
+========================= -->
 
-    <header class="topbar">
+<header class="header">
 
-        <div class="brand">
+    <img
+        src="axa-logo.png"
+        alt="AXA XL"
+        class="logo"
+    >
 
-            <div class="brand-title">
-                AXA XL
-            </div>
+    <div class="header-right">
 
-            <div class="brand-divider"></div>
-
-            <div class="brand-subtitle">
-                Credit Control Assistant
-            </div>
-
+        <div class="header-label">
+            Credit Control Assistant
         </div>
 
-        <div class="internal-badge">
+        <div class="internal">
             INTERNAL USE
         </div>
 
-    </header>
+    </div>
+
+</header>
 
 
-    <!-- =========================
-         MAIN
-    ========================= -->
+<!-- =========================
+     HERO
+========================= -->
 
-    <main class="page">
+<section class="hero">
 
-        <section class="hero">
+    <div class="hero-left">
 
-            <div class="eyebrow">
-                AXA XL • Credit Control
-            </div>
+        <div class="eyebrow">
+            AXA XL · Credit Control
+        </div>
 
-            <h1>
-                Credit Control <span>Buddy</span>
-            </h1>
+        <h1>
+            Your credit control
+            <span>partner.</span>
+        </h1>
 
-            <p class="hero-description">
-                Your internal AI assistant for credit control, insurance,
-                lines of business and related AXA XL processes.
-                Ask a question and get concise, conversational guidance.
-            </p>
+        <p class="hero-description">
+            Credit Control Buddy is an internal AI assistant designed
+            to help AXA XL colleagues navigate credit control,
+            insurance, lines of business and related processes.
+        </p>
 
-        </section>
+    </div>
 
 
-        <!-- =========================
-             CHAT WORKSPACE
-        ========================= -->
+    <div class="hero-right">
 
-        <section class="workspace">
+        <!-- Same AXA logo used subtly as a visual brand mark -->
+        <img
+            src="axa-logo.png"
+            alt=""
+            class="brand-mark"
+        >
 
-            <div class="chat-header">
+    </div>
 
-                <div class="assistant-info">
+</section>
 
-                    <div class="assistant-avatar"></div>
 
-                    <div>
+<!-- =========================
+     CHAT
+========================= -->
 
-                        <div class="assistant-name">
-                            Credit Control Buddy
-                        </div>
+<section class="chat-section">
 
-                        <div class="assistant-status">
+<div class="chat-container">
 
-                            <span class="status-dot"></span>
+    <div class="chat-header">
 
-                            Assistant available
+        <div class="chat-title">
 
-                        </div>
+            <div class="status-dot"></div>
 
-                    </div>
+            <div>
 
+                <div class="chat-name">
+                    Credit Control Buddy
                 </div>
 
-                <div class="header-label">
-                    AXA XL Internal Assistant
-                </div>
-
-            </div>
-
-
-            <!-- CHAT MESSAGES -->
-
-            <div class="chat" id="chat">
-
-                <div class="message bot">
-
-                    <div class="bubble">
-
-                        <span class="message-label">
-                            Credit Control Buddy
-                        </span>
-
-                        Hello. I'm your Credit Control Buddy.
-
-                        <br><br>
-
-                        I can help with questions related to
-                        credit control, insurance, lines of business,
-                        receivables and related processes.
-
-                        <br><br>
-
-                        What would you like to know?
-
-                    </div>
-
+                <div class="chat-status">
+                    Internal assistant · Ready to help
                 </div>
 
             </div>
-
-
-            <!-- SUGGESTED QUESTIONS -->
-
-            <div class="suggestions">
-
-                <div class="suggestion-title">
-                    Suggested questions
-                </div>
-
-                <div class="suggestion-list">
-
-                    <button
-                        class="suggestion"
-                        onclick="askSuggestion('What is credit control?')">
-                        What is credit control?
-                    </button>
-
-                    <button
-                        class="suggestion"
-                        onclick="askSuggestion('What are the main lines of business in insurance?')">
-                        Lines of business
-                    </button>
-
-                    <button
-                        class="suggestion"
-                        onclick="askSuggestion('Explain insurance receivables.')">
-                        Insurance receivables
-                    </button>
-
-                    <button
-                        class="suggestion"
-                        onclick="askSuggestion('What should I check when reviewing an overdue account?')">
-                        Overdue accounts
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- INPUT -->
-
-            <div class="input-area">
-
-                <input
-                    type="text"
-                    id="userInput"
-                    placeholder="Ask Credit Control Buddy..."
-                    autocomplete="off"
-                >
-
-                <button onclick="sendMessage()">
-                    Send
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <div class="footer">
-
-            <span>
-                AXA XL Internal Tool
-            </span>
-
-            <span>
-                AI responses should be validated against applicable internal guidance.
-            </span>
 
         </div>
 
-    </main>
+        <div class="chat-right">
+            AXA XL INTERNAL
+        </div>
+
+    </div>
 
 
-    <!-- =========================
-         JAVASCRIPT
-    ========================= -->
+    <div class="chat-body">
 
-    <script>
+        <div class="welcome">
 
-        const input = document.getElementById("userInput");
-        const chat = document.getElementById("chat");
+            <div class="welcome-label">
+                Credit Control Buddy
+            </div>
 
+            <h2>
+                What can I help you with?
+            </h2>
 
-        function addMessage(type, text) {
+            <p>
+                Ask a question about credit control, insurance,
+                lines of business, receivables or related AXA XL processes.
+                I'll keep the answer concise and conversational.
+            </p>
 
-            const message = document.createElement("div");
-
-            message.className = "message " + type;
-
-
-            const bubble = document.createElement("div");
-
-            bubble.className = "bubble";
-
-
-            const label = document.createElement("span");
-
-            label.className = "message-label";
-
-            label.textContent =
-                type === "user"
-                    ? "You"
-                    : "Credit Control Buddy";
+        </div>
 
 
-            bubble.appendChild(label);
+        <!-- QUICK TOPICS -->
+
+        <div class="quick-topics">
+
+            <div class="topic" onclick="askTopic('Credit control')">
+
+                <div class="topic-title">
+                    Credit Control
+                </div>
+
+                <div class="topic-text">
+                    Collections, receivables and credit processes
+                </div>
+
+            </div>
 
 
-            const content = document.createElement("span");
+            <div class="topic" onclick="askTopic('Insurance')">
 
-            content.innerHTML = text;
+                <div class="topic-title">
+                    Insurance
+                </div>
 
-            bubble.appendChild(content);
+                <div class="topic-text">
+                    Insurance concepts and terminology
+                </div>
+
+            </div>
 
 
-            message.appendChild(bubble);
+            <div class="topic" onclick="askTopic('Lines of Business')">
 
-            chat.appendChild(message);
+                <div class="topic-title">
+                    Lines of Business
+                </div>
+
+                <div class="topic-text">
+                    LOB terminology and business context
+                </div>
+
+            </div>
 
 
-            chat.scrollTop = chat.scrollHeight;
+            <div class="topic" onclick="askTopic('Receivables')">
+
+                <div class="topic-title">
+                    Receivables
+                </div>
+
+                <div class="topic-text">
+                    Premiums, balances and outstanding amounts
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MESSAGES -->
+
+        <div id="messages" class="messages"></div>
+
+    </div>
+
+
+    <!-- INPUT -->
+
+    <div class="chat-input-area">
+
+        <input
+            id="question"
+            class="chat-input"
+            type="text"
+            placeholder="Ask Credit Control Buddy..."
+            autocomplete="off"
+        >
+
+        <button
+            class="send-button"
+            onclick="sendQuestion()"
+        >
+            Ask Buddy
+        </button>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer class="footer">
+
+    <div>
+        <strong>AXA XL</strong> · Credit Control Buddy
+    </div>
+
+    <div>
+        Internal tool · For authorised AXA XL employees
+    </div>
+
+</footer>
+
+
+<script>
+
+/*
+=====================================================
+FRONTEND CHAT
+=====================================================
+
+For now this is the frontend.
+
+The Hugging Face API should NOT be placed directly
+inside this file with a secret API token.
+
+Later we will connect:
+
+Website
+   ↓
+Backend / API
+   ↓
+Hugging Face
+   ↓
+AXA XL knowledge base
+   ↓
+Answer
+   ↓
+Website
+
+This prevents exposing the Hugging Face token publicly.
+*/
+
+
+function addMessage(text, type) {
+
+    const messages = document.getElementById("messages");
+
+    const message = document.createElement("div");
+
+    message.className =
+        "message " +
+        (type === "user"
+            ? "user-message"
+            : "bot-message");
+
+    message.textContent = text;
+
+    messages.appendChild(message);
+
+    messages.scrollIntoView({
+        behavior: "smooth",
+        block: "end"
+    });
+}
+
+
+function askTopic(topic) {
+
+    document.getElementById("question").value =
+        "Tell me about " + topic;
+
+    sendQuestion();
+}
+
+
+function sendQuestion() {
+
+    const input =
+        document.getElementById("question");
+
+    const question =
+        input.value.trim();
+
+    if (!question) return;
+
+    addMessage(question, "user");
+
+    input.value = "";
+
+    /*
+    TEMPORARY RESPONSE
+
+    This is deliberately NOT pretending to be
+    an AI answer.
+
+    We will replace this section when the
+    Hugging Face backend is connected.
+    */
+
+    setTimeout(() => {
+
+        addMessage(
+            "I'm ready to answer this once my AXA XL knowledge base is connected. I won't provide an answer unless I can support it with the available knowledge.",
+            "bot"
+        );
+
+    }, 500);
+}
+
+
+document
+    .getElementById("question")
+    .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+            sendQuestion();
         }
 
+    });
 
-        function sendMessage() {
-
-            const question = input.value.trim();
-
-            if (!question) {
-                return;
-            }
-
-
-            addMessage(
-                "user",
-                escapeHtml(question)
-            );
-
-
-            input.value = "";
-
-
-            /*
-                TEMPORARY RESPONSE
-
-                This will later be replaced with
-                the Hugging Face API request.
-            */
-
-            setTimeout(() => {
-
-                addMessage(
-                    "bot",
-                    "I'm currently being connected to the AXA XL credit-control knowledge base. Once the knowledge base and AI service are connected, I’ll be able to provide a concise answer based on the available information."
-                );
-
-            }, 500);
-
-        }
-
-
-        function askSuggestion(question) {
-
-            input.value = question;
-
-            sendMessage();
-
-        }
-
-
-        input.addEventListener("keydown", function(event) {
-
-            if (event.key === "Enter") {
-
-                sendMessage();
-
-            }
-
-        });
-
-
-        function escapeHtml(text) {
-
-            const div = document.createElement("div");
-
-            div.textContent = text;
-
-            return div.innerHTML;
-
-        }
-
-    </script>
+</script>
 
 </body>
 </html>
