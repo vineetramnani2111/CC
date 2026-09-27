@@ -1,0 +1,21 @@
+   </div>
+            `;
+
+            // Temporary bot response
+            chat.innerHTML += `
+                <div class="message bot">
+                    <strong>Bot:</strong> I received your message!
+                </div>
+            `;
+
+            // Clear input
+            input.value = "";
+
+            // Scroll to latest message
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+    </script>
+
+</body>
+</html>
