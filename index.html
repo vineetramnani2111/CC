@@ -1,144 +1,522 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CC Buddy</title>
+
+    <title>Credit Control Buddy | AXA XL</title>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-        .container {
-            width: 90%;
-            max-width: 700px;
-            margin: 50px auto;
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f6f7;
+            min-height: 100vh;
+            color: #17212b;
         }
 
-        h1 {
+        /* HEADER */
+
+        header {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+        }
+
+        .axa-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            font-size: 25px;
+            font-weight: bold;
+            color: #111;
+        }
+
+        .axa-box {
+            width: 42px;
+            height: 42px;
+
+            background: #000;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: bold;
+            font-size: 17px;
+
+            position: relative;
+        }
+
+        .axa-box::after {
+            content: "";
+            position: absolute;
+
+            width: 34px;
+            height: 4px;
+
+            background: #e30613;
+
+            transform: rotate(-45deg);
+        }
+
+        .header-text {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* MAIN */
+
+        main {
+            min-height: calc(100vh - 72px);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 40px 20px;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 900px;
+
+            background: white;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 15px 50px rgba(0,0,0,0.08);
+
+            overflow: hidden;
+        }
+
+        /* TOP SECTION */
+
+        .hero {
             text-align: center;
+
+            padding: 45px 25px 30px;
+        }
+
+        .robot {
+            width: 100px;
+            height: 100px;
+
+            margin: 0 auto 20px;
+
+            border-radius: 50%;
+
+            background: #f0f2f4;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 55px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+            color: #111;
+        }
+
+        .hero h1 span {
+            color: #e30613;
+        }
+
+        .hero p {
+            color: #6b7280;
+            font-size: 16px;
+            line-height: 1.6;
+
+            max-width: 600px;
+            margin: auto;
+        }
+
+        /* CHAT */
+
+        .chat-container {
+            padding: 0 30px 30px;
         }
 
         #chat {
-            height: 400px;
+            height: 360px;
+
             overflow-y: auto;
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 8px;
+
+            background: #f7f8f9;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 15px;
+
+            padding: 20px;
+
+            margin-bottom: 18px;
         }
 
         .message {
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 8px;
-        }
+            max-width: 80%;
 
-        .user {
-            background: #e3f2fd;
+            padding: 13px 16px;
+
+            margin-bottom: 14px;
+
+            border-radius: 14px;
+
+            line-height: 1.5;
+
+            font-size: 15px;
         }
 
         .bot {
-            background: #eeeeee;
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            margin-right: auto;
         }
+
+        .user {
+            background: #111827;
+
+            color: white;
+
+            margin-left: auto;
+        }
+
+        /* INPUT */
 
         .input-area {
             display: flex;
+
             gap: 10px;
         }
 
         #messageInput {
             flex: 1;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
+
+            padding: 15px 17px;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 12px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        #messageInput:focus {
+            border-color: #111827;
         }
 
         button {
-            padding: 12px 20px;
+            padding: 0 24px;
+
             border: none;
-            border-radius: 8px;
-            background: #24292e;
+
+            border-radius: 12px;
+
+            background: #111827;
+
             color: white;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
             cursor: pointer;
+
+            transition: 0.2s;
         }
 
         button:hover {
-            background: #444;
+            background: #e30613;
         }
+
+        /* FOOTER */
+
+        .footer {
+            text-align: center;
+
+            padding: 0 20px 25px;
+
+            color: #9ca3af;
+
+            font-size: 12px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 0 20px;
+            }
+
+            .header-text {
+                display: none;
+            }
+
+            main {
+                padding: 15px;
+                align-items: flex-start;
+            }
+
+            .app {
+                border-radius: 15px;
+            }
+
+            .hero {
+                padding: 35px 20px 25px;
+            }
+
+            .hero h1 {
+                font-size: 29px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .robot {
+                width: 80px;
+                height: 80px;
+                font-size: 43px;
+            }
+
+            .chat-container {
+                padding: 0 15px 20px;
+            }
+
+            #chat {
+                height: 55vh;
+                padding: 15px;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .input-area {
+                gap: 7px;
+            }
+
+            #messageInput {
+                min-width: 0;
+            }
+
+            button {
+                padding: 0 17px;
+            }
+        }
+
     </style>
 </head>
 
+
 <body>
 
-    <div class="container">
+    <!-- HEADER -->
 
-        <h1>CC Buddy</h1>
+    <header>
 
-        <div id="chat">
-            <div class="message bot">
-                <strong>Bot:</strong> Hello! I'm CC Buddy. How can I help you?
+        <div class="axa-logo">
+
+            <div class="axa-box">
+                AXA
             </div>
+
+            <span>XL</span>
+
         </div>
 
-        <div class="input-area">
-            <input
-                type="text"
-                id="messageInput"
-                placeholder="Type your message..."
-            >
-
-            <button onclick="sendMessage()">
-                Send
-            </button>
+        <div class="header-text">
+            Credit Control Assistant
         </div>
 
-    </div>
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main>
+
+        <div class="app">
+
+
+            <!-- HERO -->
+
+            <section class="hero">
+
+                <div class="robot">
+                    🤖
+                </div>
+
+                <h1>
+                    Credit Control <span>Buddy</span>
+                </h1>
+
+                <p>
+                    Your AI assistant for credit control, insurance,
+                    lines of business and related AXA XL topics.
+                </p>
+
+            </section>
+
+
+            <!-- CHAT -->
+
+            <section class="chat-container">
+
+                <div id="chat">
+
+                    <div class="message bot">
+
+                        <strong>Credit Control Buddy:</strong><br>
+
+                        Hi! I'm Credit Control Buddy.
+                        Ask me a question about credit control,
+                        insurance or lines of business.
+
+                    </div>
+
+                </div>
+
+
+                <div class="input-area">
+
+                    <input
+                        type="text"
+                        id="messageInput"
+                        placeholder="Ask your question..."
+                        autocomplete="off"
+                    >
+
+                    <button onclick="sendMessage()">
+                        Send
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <div class="footer">
+
+                Credit Control Buddy · AXA XL
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- JAVASCRIPT -->
 
     <script>
 
         function sendMessage() {
 
-            const input = document.getElementById("messageInput");
-            const chat = document.getElementById("chat");
+            const input =
+                document.getElementById("messageInput");
 
-            const message = input.value.trim();
+            const chat =
+                document.getElementById("chat");
+
+            const message =
+                input.value.trim();
+
 
             if (message === "") {
                 return;
             }
 
-            // Show user's message
+
+            /* USER MESSAGE */
+
             chat.innerHTML += `
                 <div class="message user">
-                    <strong>You:</strong> ${message}
+                    ${escapeHTML(message)}
                 </div>
             `;
 
-            // Temporary bot response
+
+            /*
+                TEMPORARY RESPONSE
+
+                We will replace this section with
+                the Hugging Face AI connection later.
+            */
+
             chat.innerHTML += `
                 <div class="message bot">
-                    <strong>Bot:</strong> I received your message!
+                    <strong>Credit Control Buddy:</strong><br>
+                    Thanks for your question. I'm currently
+                    being connected to my insurance and
+                    credit-control knowledge base.
                 </div>
             `;
 
-            // Clear input
+
             input.value = "";
 
-            // Scroll to latest message
             chat.scrollTop = chat.scrollHeight;
+
         }
+
+
+        /* Prevent user input from becoming HTML */
+
+        function escapeHTML(text) {
+
+            const div = document.createElement("div");
+
+            div.textContent = text;
+
+            return div.innerHTML;
+
+        }
+
+
+        /* Press ENTER to send */
+
+        document
+            .getElementById("messageInput")
+            .addEventListener("keydown", function(event) {
+
+                if (event.key === "Enter") {
+
+                    sendMessage();
+
+                }
+
+            });
 
     </script>
 
 </body>
+
 </html>
