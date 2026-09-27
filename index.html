@@ -8,20 +8,22 @@
 
   <style>
     :root {
-      --navy: #06183f;
-      --navy-2: #0a255d;
-      --navy-3: #102f70;
-      --blue: #174ea6;
+      --navy: #061746;
+      --navy-2: #0a235f;
+      --navy-3: #102f76;
+
       --red: #ff1721;
-      --red-dark: #d90710;
+      --red-dark: #d90b14;
 
+      --blue-light: #eef3ff;
       --bg: #f3f6fb;
-      --white: #ffffff;
-      --text: #17233d;
-      --muted: #71809a;
-      --border: #dce3ee;
 
-      --success: #19c46a;
+      --text: #152542;
+      --muted: #71809a;
+      --border: #dfe5ef;
+
+      --white: #ffffff;
+      --success: #18b566;
     }
 
     * {
@@ -31,8 +33,9 @@
     html,
     body {
       margin: 0;
-      padding: 0;
-      min-height: 100%;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
       font-family:
         Inter,
         -apple-system,
@@ -41,29 +44,19 @@
         Roboto,
         Arial,
         sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
       color: var(--text);
-
       background:
         radial-gradient(
-          circle at 10% 5%,
-          rgba(23, 78, 166, 0.14),
-          transparent 28%
-        ),
-        radial-gradient(
-          circle at 90% 15%,
+          circle at 85% 5%,
           rgba(255, 23, 33, 0.08),
           transparent 25%
         ),
-        linear-gradient(
-          135deg,
-          #f4f7fc 0%,
-          #eef3fa 45%,
-          #f7f8fb 100%
-        );
+        radial-gradient(
+          circle at 5% 90%,
+          rgba(10, 35, 95, 0.08),
+          transparent 30%
+        ),
+        var(--bg);
     }
 
     button,
@@ -77,120 +70,115 @@
 
     header {
       height: 72px;
+      padding: 0 38px;
 
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      padding: 0 42px;
-
       background: rgba(255, 255, 255, 0.92);
-
-      border-bottom: 1px solid rgba(210, 219, 232, 0.8);
-
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      border-bottom: 1px solid var(--border);
 
       backdrop-filter: blur(16px);
+
+      position: relative;
+      z-index: 10;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 13px;
     }
 
-    /*
-      CSS logo.
-      No external image required.
-    */
-
     .brand-logo {
-      width: 42px;
-      height: 42px;
-
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
       border-radius: 9px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      background: var(--navy);
-
-      color: white;
-
-      font-size: 12px;
-      font-weight: 900;
-
-      letter-spacing: -0.5px;
-
-      box-shadow:
-        0 5px 15px rgba(6, 24, 63, 0.18);
     }
 
     .brand-divider {
       width: 1px;
       height: 30px;
-
-      background: #d7deea;
+      background: #d9e0eb;
     }
 
     .brand-company {
       color: var(--navy);
-
       font-size: 16px;
       font-weight: 850;
     }
 
     .brand-product {
       color: var(--muted);
-
       font-size: 12px;
-
       margin-top: 2px;
     }
 
     .internal-badge {
-      padding: 8px 13px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
 
-      border-radius: 8px;
+      padding: 9px 13px;
 
-      background: #f7f9fc;
+      border: 1px solid #d8dfeb;
+      border-radius: 9px;
 
-      border: 1px solid #d9e0eb;
-
-      color: #65738a;
+      color: #63718a;
+      background: #fafbfd;
 
       font-size: 10px;
       font-weight: 850;
+      letter-spacing: 0.8px;
+    }
 
-      letter-spacing: 0.9px;
+    .internal-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--success);
     }
 
     /* =========================
-       MAIN
+       APP
        ========================= */
 
-    main {
-      width: min(1180px, calc(100% - 40px));
+    .app {
+      height: calc(100vh - 72px);
 
+      width: min(1240px, calc(100% - 48px));
       margin: auto;
+
+      display: flex;
+      flex-direction: column;
+
+      min-height: 0;
     }
 
+    /* =========================
+       HERO
+       ========================= */
+
     .hero {
-      padding: 55px 0 28px;
+      padding: 27px 0 18px;
+
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+
+      gap: 30px;
     }
 
     .eyebrow {
       color: var(--red);
-
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 900;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
 
-      letter-spacing: 2px;
-
-      margin-bottom: 12px;
+      margin-bottom: 7px;
     }
 
     h1 {
@@ -198,27 +186,48 @@
 
       color: var(--navy);
 
-      font-size: clamp(42px, 5vw, 64px);
+      font-size: clamp(32px, 4vw, 46px);
+      line-height: 1;
 
-      line-height: 0.98;
-
-      letter-spacing: -3.5px;
+      letter-spacing: -2.5px;
     }
 
     h1 span {
       color: var(--red);
     }
 
-    .hero-text {
-      max-width: 720px;
+    .hero-description {
+      margin-top: 9px;
 
-      margin-top: 18px;
+      max-width: 650px;
 
-      color: #687791;
+      color: var(--muted);
 
-      font-size: 16px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
 
-      line-height: 1.65;
+    .capabilities {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .capability {
+      padding: 8px 10px;
+
+      background: rgba(255,255,255,0.75);
+      border: 1px solid var(--border);
+
+      border-radius: 8px;
+
+      color: #55647d;
+
+      font-size: 10px;
+      font-weight: 700;
+
+      box-shadow: 0 4px 12px rgba(7,26,73,0.03);
     }
 
     /* =========================
@@ -226,111 +235,112 @@
        ========================= */
 
     .chat-card {
+      flex: 1;
+      min-height: 0;
+
+      display: flex;
+      flex-direction: column;
+
       overflow: hidden;
 
-      margin-bottom: 38px;
+      background: rgba(255,255,255,0.94);
 
-      border: 1px solid rgba(206, 216, 231, 0.9);
-
-      border-radius: 20px;
-
-      background: white;
+      border: 1px solid var(--border);
+      border-radius: 18px;
 
       box-shadow:
-        0 30px 80px rgba(6, 24, 63, 0.12),
-        0 8px 25px rgba(6, 24, 63, 0.06);
+        0 24px 60px rgba(7,26,73,0.10),
+        0 5px 18px rgba(7,26,73,0.04);
     }
 
     /* =========================
-       CHAT HEADER
+       CHAT TOP
        ========================= */
 
     .chat-top {
-      min-height: 82px;
+      flex-shrink: 0;
+
+      min-height: 68px;
+
+      padding: 12px 19px;
 
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      padding: 17px 23px;
-
       background:
         linear-gradient(
           135deg,
-          var(--navy) 0%,
-          var(--navy-2) 100%
+          var(--navy),
+          var(--navy-2)
         );
 
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: white;
     }
 
     .assistant {
       display: flex;
       align-items: center;
-
-      gap: 13px;
+      gap: 11px;
     }
 
     .assistant-logo {
-      width: 46px;
-      height: 46px;
+      width: 41px;
+      height: 41px;
+
+      border-radius: 10px;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      border-radius: 11px;
+      background: rgba(255,255,255,0.12);
 
-      background: white;
+      border: 1px solid rgba(255,255,255,0.18);
 
-      color: var(--navy);
+      overflow: hidden;
+    }
 
-      font-size: 12px;
-      font-weight: 900;
-
-      letter-spacing: -0.5px;
-
-      box-shadow:
-        0 6px 20px rgba(0, 0, 0, 0.16);
+    .assistant-logo img {
+      width: 29px;
+      height: 29px;
+      object-fit: contain;
     }
 
     .assistant-name {
-      color: white;
-
-      font-size: 15px;
-
-      font-weight: 800;
+      font-size: 13px;
+      font-weight: 850;
     }
 
     .assistant-status {
+      margin-top: 3px;
+
       display: flex;
       align-items: center;
+      gap: 5px;
 
-      gap: 6px;
+      color: rgba(255,255,255,0.68);
 
-      margin-top: 4px;
-
-      color: rgba(255, 255, 255, 0.68);
-
-      font-size: 11px;
+      font-size: 10px;
     }
 
     .status-dot {
-      width: 7px;
-      height: 7px;
+      width: 6px;
+      height: 6px;
 
       border-radius: 50%;
 
-      background: var(--success);
+      background: #31d978;
 
-      box-shadow:
-        0 0 0 3px rgba(25, 196, 106, 0.12);
+      box-shadow: 0 0 9px rgba(49,217,120,0.8);
     }
 
     .chat-label {
-      color: rgba(255, 255, 255, 0.62);
+      color: rgba(255,255,255,0.55);
 
-      font-size: 11px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
     }
 
     /* =========================
@@ -338,29 +348,32 @@
        ========================= */
 
     .messages {
-      height: 470px;
-
-      padding: 30px;
+      flex: 1;
+      min-height: 0;
 
       overflow-y: auto;
 
+      padding: 20px 24px;
+
       background:
         radial-gradient(
-          circle at 80% 10%,
-          rgba(23, 78, 166, 0.045),
+          circle at 90% 10%,
+          rgba(255,23,33,0.025),
           transparent 25%
         ),
         linear-gradient(
           180deg,
-          #f8faff 0%,
-          #f3f6fb 100%
+          #fafdff,
+          #f5f8fc
         );
+
+      scroll-behavior: smooth;
     }
 
     .message {
       max-width: 760px;
 
-      margin-bottom: 24px;
+      margin-bottom: 17px;
 
       animation: messageIn 0.18s ease-out;
     }
@@ -368,7 +381,7 @@
     @keyframes messageIn {
       from {
         opacity: 0;
-        transform: translateY(7px);
+        transform: translateY(5px);
       }
 
       to {
@@ -379,16 +392,15 @@
 
     .message.user {
       margin-left: auto;
-
-      max-width: 680px;
+      max-width: 650px;
     }
 
     .message-label {
-      margin: 0 0 7px 4px;
+      margin: 0 0 6px 4px;
 
-      color: #748198;
+      color: #7d8aa1;
 
-      font-size: 9px;
+      font-size: 8px;
       font-weight: 900;
 
       letter-spacing: 1px;
@@ -398,33 +410,32 @@
 
     .message.user .message-label {
       text-align: right;
+      margin-right: 4px;
     }
 
     .bubble {
-      padding: 16px 18px;
+      padding: 13px 16px;
 
-      border-radius: 14px;
+      border-radius: 11px;
 
-      font-size: 14px;
-
-      line-height: 1.65;
+      font-size: 13px;
+      line-height: 1.6;
 
       white-space: pre-wrap;
-
       word-break: break-word;
     }
 
     .message.bot .bubble {
       background: white;
 
-      color: #253653;
+      border: 1px solid var(--border);
 
-      border: 1px solid #dce4ef;
-
-      border-bottom-left-radius: 5px;
+      color: #263753;
 
       box-shadow:
-        0 4px 14px rgba(6, 24, 63, 0.035);
+        0 5px 14px rgba(7,26,73,0.035);
+
+      border-top-left-radius: 4px;
     }
 
     .message.user .bubble {
@@ -432,17 +443,17 @@
         linear-gradient(
           135deg,
           var(--navy),
-          var(--navy-3)
+          var(--navy-2)
         );
 
       color: white;
 
       border: 1px solid var(--navy);
 
-      border-bottom-right-radius: 5px;
-
       box-shadow:
-        0 8px 20px rgba(6, 24, 63, 0.16);
+        0 8px 20px rgba(7,26,73,0.15);
+
+      border-bottom-right-radius: 4px;
     }
 
     /* =========================
@@ -453,23 +464,19 @@
       display: none;
 
       align-items: center;
-
-      gap: 5px;
+      gap: 4px;
 
       width: fit-content;
 
-      padding: 12px 15px;
+      padding: 10px 13px;
+
+      margin-bottom: 10px;
 
       background: white;
 
       border: 1px solid var(--border);
 
-      border-radius: 12px;
-
-      margin-bottom: 18px;
-
-      box-shadow:
-        0 4px 12px rgba(6, 24, 63, 0.04);
+      border-radius: 9px;
     }
 
     .typing.show {
@@ -477,14 +484,14 @@
     }
 
     .typing span {
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
 
-      background: #7f8ba0;
+      background: #8b98ac;
 
       border-radius: 50%;
 
-      animation: typing 1.2s infinite;
+      animation: typing 1.1s infinite;
     }
 
     .typing span:nth-child(2) {
@@ -496,10 +503,8 @@
     }
 
     @keyframes typing {
-      0%,
-      60%,
-      100% {
-        opacity: 0.25;
+      0%, 60%, 100% {
+        opacity: .25;
         transform: translateY(0);
       }
 
@@ -514,50 +519,60 @@
        ========================= */
 
     .quick-area {
-      padding: 18px 25px 20px;
+      flex-shrink: 0;
+
+      padding: 11px 20px;
+
+      background: white;
 
       border-top: 1px solid var(--border);
+    }
 
-      background: #f8faff;
+    .quick-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .quick-row::-webkit-scrollbar {
+      display: none;
     }
 
     .quick-title {
-      margin-bottom: 10px;
+      flex-shrink: 0;
 
-      color: #748198;
+      color: #7a879b;
 
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 900;
 
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
 
       text-transform: uppercase;
     }
 
-    .quick-buttons {
-      display: flex;
-      flex-wrap: wrap;
-
-      gap: 8px;
-    }
-
     .quick-button {
-      padding: 9px 13px;
+      flex-shrink: 0;
 
-      border-radius: 9px;
+      border: 1px solid #d9e0ea;
 
-      background: white;
+      background: #f9fbfd;
 
-      border: 1px solid #d5deea;
+      color: #30415e;
 
-      color: #263a5b;
+      border-radius: 8px;
 
-      font-size: 12px;
+      padding: 7px 10px;
+
+      font-size: 10px;
+      font-weight: 600;
 
       cursor: pointer;
 
-      transition:
-        0.15s ease;
+      transition: 0.15s ease;
     }
 
     .quick-button:hover {
@@ -565,10 +580,9 @@
 
       color: var(--red);
 
-      transform: translateY(-1px);
+      background: #fff8f8;
 
-      box-shadow:
-        0 4px 12px rgba(255, 23, 33, 0.08);
+      transform: translateY(-1px);
     }
 
     /* =========================
@@ -576,59 +590,63 @@
        ========================= */
 
     .input-area {
-      padding: 18px 22px 20px;
+      flex-shrink: 0;
 
-      background: white;
+      padding: 12px 20px 14px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #ffffff,
+          #fbfcfe
+        );
 
       border-top: 1px solid var(--border);
     }
 
     .input-box {
       display: flex;
-
       align-items: flex-end;
+      gap: 9px;
 
-      gap: 10px;
+      padding: 6px 6px 6px 14px;
 
-      padding: 7px 7px 7px 15px;
+      background: #f4f7fb;
 
-      background: #f5f7fb;
+      border: 1px solid #d8e0eb;
 
-      border: 1px solid #d7e0eb;
+      border-radius: 11px;
 
-      border-radius: 12px;
-
-      transition: 0.2s;
+      transition: 0.18s ease;
     }
 
     .input-box:focus-within {
       background: white;
 
-      border-color: #8c9bb2;
+      border-color: #9ba9be;
 
       box-shadow:
-        0 0 0 4px rgba(6, 24, 63, 0.045);
+        0 0 0 3px rgba(7,26,73,0.045);
     }
 
     #userInput {
       flex: 1;
 
-      min-height: 42px;
-      max-height: 120px;
+      min-height: 38px;
+      max-height: 90px;
 
-      padding: 10px 0;
+      padding: 8px 0;
+
+      resize: none;
 
       border: none;
       outline: none;
-
-      resize: none;
 
       background: transparent;
 
       color: var(--text);
 
-      font-size: 14px;
-
+      font-size: 13px;
       line-height: 1.5;
     }
 
@@ -637,33 +655,27 @@
     }
 
     #sendButton {
-      width: 44px;
-      height: 44px;
+      width: 39px;
+      height: 39px;
 
       flex-shrink: 0;
 
       border: none;
+      border-radius: 9px;
 
-      border-radius: 10px;
-
-      background:
-        linear-gradient(
-          135deg,
-          var(--red),
-          #e50914
-        );
+      background: var(--red);
 
       color: white;
 
       cursor: pointer;
 
-      font-size: 19px;
+      font-size: 17px;
       font-weight: 800;
 
-      transition: 0.15s;
+      transition: 0.15s ease;
 
       box-shadow:
-        0 5px 14px rgba(255, 23, 33, 0.2);
+        0 5px 12px rgba(255,23,33,0.22);
     }
 
     #sendButton:hover {
@@ -673,21 +685,17 @@
     }
 
     #sendButton:disabled {
-      opacity: 0.5;
-
+      opacity: .5;
       cursor: not-allowed;
-
       transform: none;
-
-      box-shadow: none;
     }
 
     .input-note {
-      margin-top: 8px;
+      margin-top: 6px;
 
-      color: #8b96a8;
+      color: #8b97aa;
 
-      font-size: 10px;
+      font-size: 9px;
     }
 
     /* =========================
@@ -695,72 +703,117 @@
        ========================= */
 
     footer {
-      padding: 0 0 35px;
+      flex-shrink: 0;
+
+      padding: 8px 0 9px;
 
       text-align: center;
 
-      color: #8995a9;
+      color: #8b97aa;
 
-      font-size: 10px;
+      font-size: 9px;
+    }
+
+    /* =========================
+       SCROLLBAR
+       ========================= */
+
+    .messages::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    .messages::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .messages::-webkit-scrollbar-thumb {
+      background: #cbd4e1;
+      border-radius: 20px;
+    }
+
+    .messages::-webkit-scrollbar-thumb:hover {
+      background: #aeb9ca;
     }
 
     /* =========================
        MOBILE
        ========================= */
 
-    @media (max-width: 700px) {
+    @media (max-width: 800px) {
+
+      html,
+      body {
+        overflow: hidden;
+      }
 
       header {
-        height: 64px;
-
-        padding: 0 15px;
+        height: 62px;
+        padding: 0 14px;
       }
 
       .brand-logo {
-        width: 36px;
-        height: 36px;
-
-        font-size: 10px;
-      }
-
-      .brand-product {
-        display: none;
-      }
-
-      .brand-divider {
-        height: 23px;
+        width: 34px;
+        height: 34px;
       }
 
       .brand-company {
         font-size: 14px;
       }
 
-      .internal-badge {
-        padding: 7px 8px;
-
-        font-size: 8px;
+      .brand-product {
+        display: none;
       }
 
-      main {
-        width: calc(100% - 20px);
+      .internal-badge {
+        font-size: 8px;
+        padding: 7px 9px;
+      }
+
+      .app {
+        width: calc(100% - 18px);
+        height: calc(100vh - 62px);
       }
 
       .hero {
-        padding: 38px 3px 24px;
+        padding: 16px 3px 12px;
+        display: block;
+      }
+
+      .eyebrow {
+        font-size: 8px;
       }
 
       h1 {
-        font-size: 40px;
-
-        letter-spacing: -2px;
+        font-size: 31px;
+        letter-spacing: -1.7px;
       }
 
-      .hero-text {
-        font-size: 14px;
+      .hero-description {
+        font-size: 11px;
+        margin-top: 6px;
+      }
+
+      .capabilities {
+        display: none;
+      }
+
+      .chat-card {
+        border-radius: 14px;
       }
 
       .chat-top {
-        padding: 14px 15px;
+        min-height: 60px;
+        padding: 10px 13px;
+      }
+
+      .assistant-logo {
+        width: 36px;
+        height: 36px;
+      }
+
+      .assistant-logo img {
+        width: 25px;
+        height: 25px;
       }
 
       .chat-label {
@@ -768,11 +821,7 @@
       }
 
       .messages {
-        height: 55vh;
-
-        min-height: 390px;
-
-        padding: 20px 15px;
+        padding: 15px 12px;
       }
 
       .message,
@@ -781,27 +830,37 @@
       }
 
       .bubble {
-        padding: 14px 15px;
-
-        font-size: 13px;
+        font-size: 12px;
+        padding: 11px 13px;
       }
 
       .quick-area {
-        padding: 15px;
+        padding: 9px 11px;
       }
 
-      .quick-buttons {
-        flex-direction: column;
+      .quick-title {
+        display: none;
+      }
+
+      .quick-row {
+        gap: 6px;
       }
 
       .quick-button {
-        width: 100%;
-
-        text-align: left;
+        font-size: 9px;
+        padding: 7px 8px;
       }
 
       .input-area {
-        padding: 14px;
+        padding: 9px 10px 10px;
+      }
+
+      .input-note {
+        display: none;
+      }
+
+      footer {
+        display: none;
       }
     }
   </style>
@@ -815,10 +874,11 @@
 
     <div class="brand">
 
-      <!-- CSS logo - no missing image -->
-      <div class="brand-logo">
-        AXA XL
-      </div>
+      <img
+        src="brand-mark.png"
+        class="brand-logo"
+        alt="AXA XL"
+      />
 
       <div class="brand-divider"></div>
 
@@ -835,45 +895,74 @@
     </div>
 
     <div class="internal-badge">
+      <span class="internal-dot"></span>
       INTERNAL USE
     </div>
 
   </header>
 
 
-  <!-- ================= MAIN ================= -->
+  <!-- ================= APP ================= -->
 
-  <main>
+  <main class="app">
+
+    <!-- HERO -->
 
     <section class="hero">
 
-      <div class="eyebrow">
-        AXA XL · CREDIT CONTROL
+      <div>
+
+        <div class="eyebrow">
+          AXA XL · CREDIT CONTROL
+        </div>
+
+        <h1>
+          Credit Control <span>Buddy</span>
+        </h1>
+
+        <div class="hero-description">
+          Your AI assistant for credit control, insurance,
+          receivables, collections, premiums and related
+          insurance terminology.
+        </div>
+
       </div>
 
-      <h1>
-        Credit Control <span>Buddy</span>
-      </h1>
+      <div class="capabilities">
 
-      <div class="hero-text">
-        Your AI assistant for credit control, insurance,
-        receivables, collections and related insurance
-        terminology. Ask a question and get a concise answer.
+        <div class="capability">
+          Credit Control
+        </div>
+
+        <div class="capability">
+          Insurance
+        </div>
+
+        <div class="capability">
+          Receivables
+        </div>
+
+        <div class="capability">
+          Collections
+        </div>
+
       </div>
 
     </section>
 
 
-    <!-- ================= CHAT ================= -->
+    <!-- CHAT -->
 
     <section class="chat-card">
+
+      <!-- CHAT HEADER -->
 
       <div class="chat-top">
 
         <div class="assistant">
 
           <div class="assistant-logo">
-            AXA XL
+            <img src="brand-mark.png" alt="" />
           </div>
 
           <div>
@@ -883,8 +972,11 @@
             </div>
 
             <div class="assistant-status">
+
               <span class="status-dot"></span>
+
               AI assistant available
+
             </div>
 
           </div>
@@ -898,7 +990,7 @@
       </div>
 
 
-      <!-- ================= MESSAGES ================= -->
+      <!-- MESSAGES -->
 
       <div
         class="messages"
@@ -911,40 +1003,44 @@
             Credit Control Buddy
           </div>
 
-          <div class="bubble">Hello. I'm your Credit Control Buddy.
+          <div class="bubble">
+            Hello 👋 I'm your Credit Control Buddy.
 
-I can help with credit control, insurance,
-receivables, collections, premiums,
-lines of business and related terminology.
+            I can help with credit control, insurance,
+            receivables, collections, premiums,
+            lines of business and related terminology.
 
-What would you like to know?</div>
+            What would you like to know?
+          </div>
 
         </div>
 
 
-        <!-- TYPING INDICATOR -->
+        <!-- TYPING -->
 
         <div
           class="typing"
           id="typing"
         >
+
           <span></span>
           <span></span>
           <span></span>
+
         </div>
 
       </div>
 
 
-      <!-- ================= QUICK QUESTIONS ================= -->
+      <!-- QUICK QUESTIONS -->
 
       <div class="quick-area">
 
-        <div class="quick-title">
-          Suggested questions
-        </div>
+        <div class="quick-row">
 
-        <div class="quick-buttons">
+          <div class="quick-title">
+            Suggested
+          </div>
 
           <button
             class="quick-button"
@@ -979,7 +1075,7 @@ What would you like to know?</div>
       </div>
 
 
-      <!-- ================= INPUT ================= -->
+      <!-- INPUT -->
 
       <div class="input-area">
 
@@ -1003,7 +1099,7 @@ What would you like to know?</div>
         </div>
 
         <div class="input-note">
-          For internal use. Verify responses against applicable
+          Internal use only · Verify responses against applicable
           internal policies and documentation.
         </div>
 
@@ -1071,6 +1167,8 @@ What would you like to know?</div>
 
       input.value = question;
 
+      input.focus();
+
       sendMessage();
 
     }
@@ -1111,7 +1209,6 @@ What would you like to know?</div>
 
 
       wrapper.appendChild(label);
-
       wrapper.appendChild(bubble);
 
 
@@ -1121,8 +1218,23 @@ What would you like to know?</div>
       );
 
 
-      messages.scrollTop =
-        messages.scrollHeight;
+      scrollMessages();
+
+    }
+
+
+    /* =========================
+       AUTO SCROLL
+       ========================= */
+
+    function scrollMessages() {
+
+      requestAnimationFrame(() => {
+
+        messages.scrollTop =
+          messages.scrollHeight;
+
+      });
 
     }
 
@@ -1157,8 +1269,11 @@ What would you like to know?</div>
       */
 
       conversationHistory.push({
+
         role: "user",
+
         content: question
+
       });
 
 
@@ -1166,7 +1281,7 @@ What would you like to know?</div>
 
 
       /*
-        Disable send
+        Disable button
       */
 
       sendButton.disabled = true;
@@ -1178,6 +1293,8 @@ What would you like to know?</div>
 
       typing.classList.add("show");
 
+      scrollMessages();
+
 
       try {
 
@@ -1186,17 +1303,20 @@ What would you like to know?</div>
 
 
         /*
-          Save AI response
+          Save AI answer
         */
 
         conversationHistory.push({
+
           role: "assistant",
+
           content: answer
+
         });
 
 
         /*
-          Display AI response
+          Display answer
         */
 
         addMessage(
@@ -1208,12 +1328,18 @@ What would you like to know?</div>
 
       catch (error) {
 
-        console.error(error);
+        console.error(
+          "Chat error:",
+          error
+        );
 
 
         addMessage(
+
           "bot",
+
           "Sorry, I couldn't connect to the AI service right now. Please try again."
+
         );
 
       }
@@ -1226,8 +1352,7 @@ What would you like to know?</div>
 
         input.focus();
 
-        messages.scrollTop =
-          messages.scrollHeight;
+        scrollMessages();
 
       }
 
@@ -1235,7 +1360,7 @@ What would you like to know?</div>
 
 
     /* =========================
-       BACKEND API
+       API
        ========================= */
 
     async function askAI(question) {
@@ -1295,6 +1420,20 @@ What would you like to know?</div>
       return data.answer;
 
     }
+
+
+    /*
+      Make sure the input is ready immediately.
+    */
+
+    window.addEventListener(
+      "load",
+      () => {
+
+        input.focus();
+
+      }
+    );
 
   </script>
 
