@@ -1,31 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>My AI Chatbot</title>
+    <title>CC Buddy</title>
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
-            background: #f2f2f2;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
 
-        .chat-container {
+        .container {
             width: 90%;
             max-width: 700px;
             margin: 50px auto;
             background: white;
-            border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         h1 {
@@ -36,22 +31,23 @@
             height: 400px;
             overflow-y: auto;
             border: 1px solid #ddd;
-            border-radius: 10px;
             padding: 15px;
             margin-bottom: 15px;
-            background: #fafafa;
+            border-radius: 8px;
         }
 
         .message {
             margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
         }
 
         .user {
-            text-align: right;
+            background: #e3f2fd;
         }
 
         .bot {
-            text-align: left;
+            background: #eeeeee;
         }
 
         .input-area {
@@ -59,7 +55,7 @@
             gap: 10px;
         }
 
-        #message {
+        #messageInput {
             flex: 1;
             padding: 12px;
             border: 1px solid #ccc;
@@ -71,44 +67,39 @@
             padding: 12px 20px;
             border: none;
             border-radius: 8px;
-            background: #24292f;
+            background: #24292e;
             color: white;
-            font-size: 16px;
             cursor: pointer;
         }
 
         button:hover {
-            background: #000;
+            background: #444;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="chat-container">
+    <div class="container">
 
-        <h1>🤖 My AI Chatbot</h1>
+        <h1>CC Buddy</h1>
 
         <div id="chat">
-
             <div class="message bot">
-                <strong>Bot:</strong> Hello! How can I help you?
+                <strong>Bot:</strong> Hello! I'm CC Buddy. How can I help you?
             </div>
-
         </div>
 
         <div class="input-area">
-
             <input
                 type="text"
-                id="message"
+                id="messageInput"
                 placeholder="Type your message..."
             >
 
             <button onclick="sendMessage()">
                 Send
             </button>
-
         </div>
 
     </div>
@@ -117,7 +108,7 @@
 
         function sendMessage() {
 
-            const input = document.getElementById("message");
+            const input = document.getElementById("messageInput");
             const chat = document.getElementById("chat");
 
             const message = input.value.trim();
@@ -126,25 +117,28 @@
                 return;
             }
 
+            // Show user's message
             chat.innerHTML += `
                 <div class="message user">
                     <strong>You:</strong> ${message}
                 </div>
             `;
 
+            // Temporary bot response
             chat.innerHTML += `
                 <div class="message bot">
                     <strong>Bot:</strong> I received your message!
                 </div>
             `;
 
+            // Clear input
             input.value = "";
 
+            // Scroll to latest message
             chat.scrollTop = chat.scrollHeight;
         }
 
     </script>
 
 </body>
-
 </html>
