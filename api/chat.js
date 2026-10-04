@@ -128,7 +128,7 @@ and should be treated as trusted internal knowledge.
 M3:
 Provides detailed information about a policy.
 
-I3:
+/I:
 Checks whether an IBAN is registered against a payee code.
 
 T3:
@@ -313,11 +313,11 @@ Good response:
 ------------------------------------------------------------
 
 User:
-"What does I3 do?"
+"What does /I do?"
 
 Good response:
 
-"I3 is used to check whether an IBAN is registered against
+"/I is used to check whether an IBAN is registered against
 a payee code."
 
 ------------------------------------------------------------
