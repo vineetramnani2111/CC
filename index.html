@@ -98,19 +98,6 @@
       border-radius: 9px;
     }
 
-    .brand-logo-fallback {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--red);
-      color: white;
-      font-size: 10px;
-      line-height: 0.9;
-      font-weight: 900;
-      letter-spacing: -0.4px;
-      text-align: center;
-    }
-
     .brand-divider {
       width: 1px;
       height: 30px;
@@ -175,7 +162,7 @@
        ========================= */
 
     .hero {
-      padding: 16px 0 10px;
+      padding: 27px 0 18px;
 
       display: flex;
       align-items: flex-end;
@@ -199,7 +186,7 @@
 
       color: var(--navy);
 
-      font-size: clamp(30px, 3.4vw, 40px);
+      font-size: clamp(32px, 4vw, 46px);
       line-height: 1;
 
       letter-spacing: -2.5px;
@@ -216,8 +203,8 @@
 
       color: var(--muted);
 
-      font-size: 12px;
-      line-height: 1.45;
+      font-size: 13px;
+      line-height: 1.55;
     }
 
     .capabilities {
@@ -320,20 +307,6 @@
       object-fit: contain;
     }
 
-    .assistant-logo-fallback {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 29px;
-      height: 29px;
-      border-radius: 7px;
-      background: rgba(255,255,255,0.95);
-      color: var(--navy);
-      font-size: 10px;
-      font-weight: 900;
-      letter-spacing: -0.3px;
-    }
-
     .assistant-name {
       font-size: 13px;
       font-weight: 850;
@@ -380,7 +353,7 @@
 
       overflow-y: auto;
 
-      padding: 16px 24px;
+      padding: 20px 24px;
 
       background:
         radial-gradient(
@@ -452,41 +425,6 @@
       word-break: break-word;
     }
 
-    .bubble p {
-      margin: 0 0 10px;
-    }
-
-    .bubble p:last-child {
-      margin-bottom: 0;
-    }
-
-    .bubble ul,
-    .bubble ol {
-      margin: 7px 0 10px 20px;
-      padding: 0;
-    }
-
-    .bubble li {
-      margin: 4px 0;
-      padding-left: 2px;
-    }
-
-    .bubble strong {
-      font-weight: 750;
-    }
-
-    .bubble em {
-      font-style: italic;
-    }
-
-    .bubble code {
-      padding: 2px 5px;
-      border-radius: 5px;
-      background: #eef2f7;
-      font-family: Consolas, Monaco, monospace;
-      font-size: 0.92em;
-    }
-
     .message.bot .bubble {
       background: white;
 
@@ -517,6 +455,27 @@
 
       border-bottom-right-radius: 4px;
     }
+
+    /* =========================
+       MARKDOWN CONTENT
+       ========================= */
+
+    .bubble p { margin: 0 0 10px; }
+    .bubble p:last-child { margin-bottom: 0; }
+    .bubble strong { font-weight: 800; color: #10264a; }
+    .bubble em { font-style: italic; }
+    .bubble code { padding: 2px 5px; border-radius: 5px; background: #eef2f7; color: #18345f; font-family: Consolas, "Courier New", monospace; font-size: .92em; }
+    .bubble ul, .bubble ol { margin: 7px 0 10px 20px; padding: 0; }
+    .bubble li { margin: 4px 0; padding-left: 2px; }
+    .bubble h3, .bubble h4 { margin: 14px 0 7px; color: #122a52; line-height: 1.3; }
+    .bubble h3 { font-size: 15px; }
+    .bubble h4 { font-size: 14px; }
+    .bubble .md-table-wrap { width: 100%; overflow-x: auto; margin: 10px 0 12px; border: 1px solid #dfe5ef; border-radius: 8px; background: #fff; }
+    .bubble table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 12px; line-height: 1.45; }
+    .bubble th, .bubble td { padding: 9px 10px; text-align: left; vertical-align: top; border-bottom: 1px solid #e4e9f1; border-right: 1px solid #e4e9f1; }
+    .bubble th:last-child, .bubble td:last-child { border-right: none; }
+    .bubble th { background: #f4f7fb; color: #1a3157; font-weight: 800; }
+    .bubble tr:last-child td { border-bottom: none; }
 
     /* =========================
        TYPING
@@ -583,7 +542,7 @@
     .quick-area {
       flex-shrink: 0;
 
-      padding: 9px 20px;
+      padding: 11px 20px;
 
       background: white;
 
@@ -654,7 +613,7 @@
     .input-area {
       flex-shrink: 0;
 
-      padding: 9px 20px 11px;
+      padding: 12px 20px 14px;
 
       background:
         linear-gradient(
@@ -837,7 +796,7 @@
       }
 
       .hero {
-        padding: 10px 3px 8px;
+        padding: 16px 3px 12px;
         display: block;
       }
 
@@ -846,7 +805,7 @@
       }
 
       h1 {
-        font-size: 28px;
+        font-size: 31px;
         letter-spacing: -1.7px;
       }
 
@@ -936,7 +895,11 @@
 
     <div class="brand">
 
-      <div class="brand-logo brand-logo-fallback" aria-label="AXA XL">AXA<br>XL</div>
+      <img
+        src="brand-mark.png"
+        class="brand-logo"
+        alt="AXA XL"
+      />
 
       <div class="brand-divider"></div>
 
@@ -1020,7 +983,7 @@
         <div class="assistant">
 
           <div class="assistant-logo">
-            <div class="assistant-logo-fallback" aria-label="Credit Control Buddy">CC</div>
+            <img src="brand-mark.png" alt="" />
           </div>
 
           <div>
@@ -1233,7 +1196,7 @@
 
 
     /* =========================
-       MESSAGE FORMATTING
+       MARKDOWN RENDERER
        ========================= */
 
     function escapeHTML(value) {
@@ -1246,89 +1209,198 @@
     }
 
     function renderInlineMarkdown(value) {
-      let result = escapeHTML(value);
+      let text = escapeHTML(value);
+      const codeParts = [];
 
-      // Bold: **text**
-      result = result.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+      text = text.replace(/`([^`]+)`/g, function(_, code) {
+        const token = "@@CODE_" + codeParts.length + "@@";
+        codeParts.push("<code>" + code + "</code>");
+        return token;
+      });
 
-      // Italic: *text*
-      result = result.replace(/(^|[^\*])\*([^*\n]+)\*(?!\*)/g, "$1<em>$2</em>");
+      text = text
+        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+        .replace(/__([^_]+)__/g, "<strong>$1</strong>")
+        .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+        .replace(/_([^_]+)_/g, "<em>$1</em>");
 
-      // Inline code: `text`
-      result = result.replace(/`([^`\n]+)`/g, "<code>$1</code>");
+      codeParts.forEach(function(code, index) {
+        text = text.replace("@@CODE_" + index + "@@", code);
+      });
 
-      return result;
+      return text;
     }
 
-    function renderMessage(value) {
-      const lines = String(value || "").replace(/\r\n/g, "\n").split("\n");
+    function isTableSeparator(line) {
+      const cells = line.trim().replace(/^\|/, "").replace(/\|$/, "").split("|");
+      return cells.length >= 2 && cells.every(function(cell) {
+        return /^\s*:?-{3,}:?\s*$/.test(cell);
+      });
+    }
+
+    function parseTable(lines, startIndex) {
+      if (startIndex + 1 >= lines.length) return null;
+      if (!lines[startIndex].includes("|")) return null;
+      if (!isTableSeparator(lines[startIndex + 1])) return null;
+
+      function cells(line) {
+        return line.trim()
+          .replace(/^\|/, "")
+          .replace(/\|$/, "")
+          .split("|")
+          .map(function(cell) { return cell.trim(); });
+      }
+
+      const headers = cells(lines[startIndex]);
+      const rows = [];
+      let i = startIndex + 2;
+
+      while (i < lines.length && lines[i].trim() && lines[i].includes("|")) {
+        rows.push(cells(lines[i]));
+        i++;
+      }
+
+      let table = '<div class="md-table-wrap"><table><thead><tr>';
+      headers.forEach(function(header) {
+        table += "<th>" + renderInlineMarkdown(header) + "</th>";
+      });
+      table += "</tr></thead><tbody>";
+
+      rows.forEach(function(row) {
+        table += "<tr>";
+        headers.forEach(function(_, index) {
+          table += "<td>" + renderInlineMarkdown(row[index] || "") + "</td>";
+        });
+        table += "</tr>";
+      });
+
+      table += "</tbody></table></div>";
+      return { html: table, nextIndex: i };
+    }
+
+    function renderMessage(text) {
+      const lines = String(text || "").replace(/\r\n/g, "\n").split("\n");
       const output = [];
       let paragraph = [];
       let listType = null;
+      let listItems = [];
 
       function flushParagraph() {
         if (!paragraph.length) return;
-
-        const content = paragraph
-          .map(line => renderInlineMarkdown(line))
-          .join("<br>");
-
-        output.push(`<p>${content}</p>`);
+        output.push("<p>" + paragraph.map(function(line) {
+          return renderInlineMarkdown(line.trim());
+        }).join("<br>") + "</p>");
         paragraph = [];
       }
 
-      function closeList() {
-        if (!listType) return;
-        output.push(`</${listType}>`);
+      function flushList() {
+        if (!listType || !listItems.length) return;
+        const tag = listType === "ol" ? "ol" : "ul";
+        output.push("<" + tag + ">" + listItems.map(function(item) {
+          return "<li>" + renderInlineMarkdown(item) + "</li>";
+        }).join("") + "</" + tag + ">");
         listType = null;
+        listItems = [];
       }
 
-      for (const rawLine of lines) {
-        const line = rawLine.trim();
+      let i = 0;
+      while (i < lines.length) {
+        const line = lines[i];
+        const trimmed = line.trim();
 
-        if (!line) {
+        // Remove Markdown code fences. If the fenced content is a
+        // Markdown table, let the table parser render it normally.
+        if (trimmed.startsWith("```")) {
           flushParagraph();
-          closeList();
+          flushList();
+
+          i++;
+
+          while (i < lines.length && !lines[i].trim().startsWith("```")) {
+            const fencedLine = lines[i];
+
+            if (isTableSeparator(lines[i + 1] || "")) {
+              const table = parseTable(lines, i);
+              if (table) {
+                output.push(table.html);
+                i = table.nextIndex;
+                continue;
+              }
+            }
+
+            if (fencedLine.trim()) {
+              output.push("<p>" + renderInlineMarkdown(fencedLine.trim()) + "</p>");
+            }
+
+            i++;
+          }
+
+          if (i < lines.length) i++;
           continue;
         }
 
-        const bullet = line.match(/^[-•]\s+(.+)$/);
-        const numbered = line.match(/^\d+[.)]\s+(.+)$/);
+        // Horizontal rule
+        if (/^([-*_])(?:\s*\1){2,}$/.test(trimmed)) {
+          flushParagraph();
+          flushList();
+          output.push("<hr>");
+          i++;
+          continue;
+        }
 
+        const table = parseTable(lines, i);
+
+        if (table) {
+          flushParagraph();
+          flushList();
+          output.push(table.html);
+          i = table.nextIndex;
+          continue;
+        }
+
+        if (!trimmed) {
+          flushParagraph();
+          flushList();
+          i++;
+          continue;
+        }
+
+        const heading = trimmed.match(/^(#{1,4})\s+(.+)$/);
+        if (heading) {
+          flushParagraph();
+          flushList();
+          const level = heading[1].length;
+          output.push("<h" + level + ">" + renderInlineMarkdown(heading[2]) + "</h" + level + ">");
+          i++;
+          continue;
+        }
+
+        const bullet = trimmed.match(/^[-*•]\s+(.+)$/);
         if (bullet) {
           flushParagraph();
-
-          if (listType !== "ul") {
-            closeList();
-            output.push("<ul>");
-            listType = "ul";
-          }
-
-          output.push(`<li>${renderInlineMarkdown(bullet[1])}</li>`);
+          if (listType !== "ul") { flushList(); listType = "ul"; }
+          listItems.push(bullet[1]);
+          i++;
           continue;
         }
 
+        const numbered = trimmed.match(/^\d+[.)]\s+(.+)$/);
         if (numbered) {
           flushParagraph();
-
-          if (listType !== "ol") {
-            closeList();
-            output.push("<ol>");
-            listType = "ol";
-          }
-
-          output.push(`<li>${renderInlineMarkdown(numbered[1])}</li>`);
+          if (listType !== "ol") { flushList(); listType = "ol"; }
+          listItems.push(numbered[1]);
+          i++;
           continue;
         }
 
-        closeList();
-        paragraph.push(line);
+        flushList();
+        paragraph.push(trimmed);
+        i++;
       }
 
       flushParagraph();
-      closeList();
-
-      return output.join("") || "<p></p>";
+      flushList();
+      return output.join("");
     }
 
     /* =========================
