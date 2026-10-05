@@ -1,17 +1,9 @@
 export default async function handler(req, res) {
-  // ============================================================
-  // METHOD CHECK
-  // ============================================================
-
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
-    // ============================================================
-    // READ REQUEST
-    // ============================================================
-
     const body = req.body || {};
     const message = typeof body.message === "string" ? body.message.trim() : "";
     const history = Array.isArray(body.history) ? body.history : [];
@@ -21,16 +13,7 @@ export default async function handler(req, res) {
     }
 
     const q = message.toLowerCase();
-
-    // ============================================================
-    // ENVIRONMENT VARIABLES
-    // ============================================================
-
     const HF_TOKEN = process.env.HF_TOKEN;
-
-    // ============================================================
-    // VERIFIED AXA XL INTERNAL KNOWLEDGE
-    // ============================================================
 
     const internalKnowledge = `
 VERIFIED AXA XL INTERNAL KNOWLEDGE
@@ -92,10 +75,6 @@ Query - Pending items queried with relevant booking teams.
 - Escalation/NOC handling by ESS/onshore teams.
 `;
 
-    // ============================================================
-    // HELPERS
-    // ============================================================
-
     function cleanText(value) {
       return String(value || "").replace(/\s+/g, " ").trim();
     }
@@ -115,21 +94,13 @@ Query - Pending items queried with relevant booking teams.
           content: item.content.trim()
         }));
     }
-
-    // ============================================================
-    // INTERNAL ROUTING CHECK
-    // ============================================================
     
-    // This now strictly routes to internal knowledge ONLY if the user types "axa"
+    // Only route to internal data if "axa" is in the user's prompt
     const isInternal = q.includes("axa");
-
-    // ============================================================
-    // HUGGING FACE FUNCTION
-    // ============================================================
 
     async function callHuggingFace(messages) {
       if (!HF_TOKEN) {
-        return { ok: false, error: "HF_TOKEN is not configured in Vercel." };
+        return { ok: false, error: "HF_TOKEN is missing in backend environment variables." };
       }
 
       try {
@@ -143,7 +114,8 @@ Query - Pending items queried with relevant booking teams.
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            model: "openai/gpt-oss-120b:fastest",
+            // Changed from the invalid "openai/gpt-oss-120b:fastest" to a standard valid model
+            model: "meta-llama/Meta-Llama-3-8B-Instruct",
             messages,
             temperature: 0.35,
             max_tokens: 700,
@@ -186,10 +158,7 @@ Query - Pending items queried with relevant booking teams.
       }
     }
 
-    // ============================================================
     // INTERNAL QUESTION FLOW
-    // ============================================================
-
     if (isInternal) {
       const internalMessages = [
         {
@@ -213,19 +182,16 @@ ${internalKnowledge}`
           sources: []
         });
       } else {
-        return res.status(500).json({
-          answer: "I experienced an error accessing the internal AXA data. Please try again.",
+        // Returned to status 200 so the frontend prints the actual error reason
+        return res.status(200).json({
+          answer: `Internal routing error: ${result.error}`,
           mode: "error",
           warning: result.error
         });
       }
     }
 
-    // ============================================================
-    // PUBLIC / GENERAL QUESTION FLOW
-    // ============================================================
-
-    // If "axa" is not in the prompt, it acts as a general AI
+    // PUBLIC QUESTION FLOW
     const publicSystemPrompt = `You are Credit Control Buddy, a professional AI assistant. 
 Answer the user's general questions about credit control, insurance, or other topics directly and accurately based on your general knowledge.
 Do not mention internal AXA XL procedures unless specifically asked. Be concise but useful.`;
@@ -247,22 +213,19 @@ Do not mention internal AXA XL procedures unless specifically asked. Be concise 
       });
     }
 
-    // ============================================================
-    // AI SERVICE FAILED
-    // ============================================================
-
-    return res.status(500).json({
+    // AI SERVICE FAILED (Status 200 so the frontend can read the answer string)
+    return res.status(200).json({
       answer: HF_TOKEN 
-        ? "The AI service is currently unavailable. Please try again in a moment." 
-        : "The AI service is not configured correctly. Please add HF_TOKEN to your environment variables.",
+        ? `Model error: ${hfResult.error}` 
+        : "Configuration error: Please add HF_TOKEN to your environment variables.",
       mode: "service_fallback",
       warning: hfResult.error
     });
 
   } catch (error) {
     console.error("COMPLETE API ERROR:", error);
-    return res.status(500).json({
-      answer: "I ran into a temporary problem while processing that request. Please try the question again.",
+    return res.status(200).json({
+      answer: `Server error: ${error?.message || "Unknown error."}`,
       mode: "error_fallback",
       warning: error?.message || "Unknown server error."
     });
