@@ -10,15 +10,158 @@ export default async function handler(req, res) {
   }
 
   try {
-    // ============================================================
-    // REQUEST DATA
-    // ============================================================
-
     const { message, history = [] } = req.body || {};
 
     if (!message || !message.trim()) {
       return res.status(400).json({
         error: "Message is required"
+      });
+    }
+
+    const userMessage = message.trim();
+    const normalized = userMessage
+      .toLowerCase()
+      .replace(/[?.,!]/g, "")
+      .trim();
+
+    // ============================================================
+    // VERIFIED CREDIT CONTROL / GENIUS FALLBACK ANSWERS
+    // ============================================================
+    // These answers do NOT depend on Hugging Face.
+    // They use only the verified information provided for
+    // Credit Control Buddy.
+    // ============================================================
+
+    const verifiedAnswers = {
+      "m3":
+        "M3 is used to check detailed information about a policy.",
+
+      "/i":
+        "/I is used to check whether an IBAN is registered against a particular payee code.",
+
+      "t3":
+        "T3 is used to check the due date for a booking.",
+
+      "b4":
+        "B4 is used to check what bookings are available on a particular account code.",
+
+      "b4+8":
+        "B4+8 is used to update narratives on a booking.",
+
+      "b5":
+        "B5 is used to get the breakdown of a booking when commission is involved.",
+
+      "5":
+        "5 is used to get the proper breakdown of a booking, including taxes, net premium and commission."
+    };
+
+    // ============================================================
+    // DIRECT GENIUS COMMAND CHECK
+    // ============================================================
+
+    if (verifiedAnswers[normalized]) {
+      return res.status(200).json({
+        answer: verifiedAnswers[normalized]
+      });
+    }
+
+    // Also handle natural questions about Genius commands.
+    if (
+      normalized.includes("what is m3") ||
+      normalized.includes("what does m3") ||
+      normalized.includes("m3 command") ||
+      normalized.includes("m3 used")
+    ) {
+      return res.status(200).json({
+        answer:
+          "M3 is used to check detailed information about a policy."
+      });
+    }
+
+    if (
+      normalized.includes("what is /i") ||
+      normalized.includes("what does /i") ||
+      normalized.includes("what is i command") ||
+      normalized.includes("ib an") ||
+      normalized.includes("iban")
+    ) {
+      return res.status(200).json({
+        answer:
+          "/I is used to check whether an IBAN is registered against a particular payee code."
+      });
+    }
+
+    if (
+      normalized.includes("what is t3") ||
+      normalized.includes("what does t3") ||
+      normalized.includes("t3 command") ||
+      normalized.includes("t3 used")
+    ) {
+      return res.status(200).json({
+        answer:
+          "T3 is used to check the due date for a booking."
+      });
+    }
+
+    if (
+      normalized.includes("what is b4") ||
+      normalized.includes("what does b4") ||
+      normalized.includes("b4 command") ||
+      normalized.includes("b4 used")
+    ) {
+      return res.status(200).json({
+        answer:
+          "B4 is used to check what bookings are available on a particular account code."
+      });
+    }
+
+    if (
+      normalized.includes("what is b4+8") ||
+      normalized.includes("what does b4+8") ||
+      normalized.includes("b4+8 command") ||
+      normalized.includes("b4+8 used")
+    ) {
+      return res.status(200).json({
+        answer:
+          "B4+8 is used to update narratives on a booking."
+      });
+    }
+
+    if (
+      normalized.includes("what is b5") ||
+      normalized.includes("what does b5") ||
+      normalized.includes("b5 command") ||
+      normalized.includes("b5 used")
+    ) {
+      return res.status(200).json({
+        answer:
+          "B5 is used to get the breakdown of a booking when commission is involved."
+      });
+    }
+
+    // ============================================================
+    // DIRECT VERIFIED GENERAL CREDIT CONTROL ANSWER
+    // ============================================================
+
+    if (
+      normalized === "what is credit control" ||
+      normalized === "what is credit control in insurance" ||
+      normalized.includes("define credit control")
+    ) {
+      return res.status(200).json({
+        answer:
+          "Credit control in insurance is the process of monitoring and managing amounts owed to the insurer, particularly premiums and other receivables. The objective is to support timely collection and effective management of outstanding balances."
+      });
+    }
+
+    if (
+      normalized.includes("what is an overdue receivable") ||
+      normalized.includes("what is overdue receivable") ||
+      normalized.includes("overdue receivable")
+    ) {
+      return res.status(200).json({
+        answer:
+          "An overdue receivable is an amount that was due for payment but has not been received by the agreed due date. In Credit Control, it requires follow-up such as reminders, queries or escalation."
       });
     }
 
@@ -48,7 +191,7 @@ insurance systems, Genius and related processes.
 
 Answer like a knowledgeable Credit Control colleague.
 
-Your response should be:
+Be:
 
 - Professional
 - Clear
@@ -57,21 +200,17 @@ Your response should be:
 - Concise
 - Accurate
 
-IMPORTANT:
-Answer the employee's question directly.
+Answer the question directly first.
 
-Do NOT unnecessarily turn every answer into:
-Step 1 -> Step 2 -> Step 3
+Do not unnecessarily turn every answer into Step 1, Step 2,
+Step 3.
 
-Only use numbered steps when the employee asks about a process,
-workflow, sequence or procedure.
+Only use numbered steps when the employee asks for a process,
+workflow or sequence.
 
-Use bullets when they genuinely help.
+Use bullets when useful.
 
-Use tables when comparing multiple items or when a table makes
-the information easier to understand.
-
-Do not invent AXA XL-specific information.
+Use tables when useful.
 
 ============================================================
 GENERAL CREDIT CONTROL KNOWLEDGE
@@ -118,38 +257,33 @@ Credit Control
 Collection
 Cash received
 
-Do not force this relationship into every answer.
-
 LOB means Line of Business.
 
-If the employee asks about a responsible individual, explain
-the concept in the context of the relevant Credit Control
-activity.
+If the user asks about a responsible individual, explain the
+concept in the context of the relevant Credit Control activity.
 
-Do NOT invent names or internal responsibilities.
+Do not invent names or internal responsibilities.
 
 ============================================================
 GENIUS - VERIFIED INFORMATION
 ============================================================
 
-Genius is a key insurance system used in the Credit Control
-environment.
-
-The following Genius commands are verified information:
+The following Genius information is verified and must be used
+when answering relevant questions:
 
 M3
 M3 is used to check detailed information about a policy.
 
- /I
-/I is used to check whether an IBAN is registered against
-a particular payee code.
+/I
+/I is used to check whether an IBAN is registered against a
+particular payee code.
 
 T3
 T3 is used to check the due date for a booking.
 
 B4
-B4 is used to check what bookings are available on a
-particular account code.
+B4 is used to check what bookings are available on a particular
+account code.
 
 B4+8
 B4+8 is used to update narratives on a booking.
@@ -170,14 +304,14 @@ IMPORTANT:
 Do NOT invent any other Genius commands.
 
 If asked about a Genius command that is not listed above,
-clearly say that verified information is not currently
-available for that command.
+say that verified information is not currently available
+for that command.
 
 ============================================================
 INSURANCE SYSTEMS
 ============================================================
 
-Verified insurance system information:
+Verified information:
 
 GENIUS
 Legacy XL business in all regions.
@@ -191,7 +325,7 @@ Brooklyn Underwriting business in APAC.
 theFrame
 Lloyds business in all regions.
 
-Do NOT invent additional functionality for these systems.
+Do not invent functionality for these systems.
 
 ============================================================
 PAYABLE MANAGEMENT PROCESS
@@ -320,51 +454,23 @@ ANSWER STYLE
 
 For a simple question, give a simple answer.
 
-Example:
-
-Question:
-What is credit control?
-
-Answer:
-
-Credit control in insurance is the process of monitoring and
-managing amounts owed to the insurer, particularly premiums
-and other receivables. The objective is to support timely
-collection and effective management of outstanding balances.
-
-For a Genius question:
+For example:
 
 Question:
 What is T3?
 
 Answer:
-
 T3 is used to check the due date for a booking.
 
 For multiple Genius commands, a table is appropriate.
 
-Example:
-
-| Command | Purpose |
-|---|---|
-| M3 | Check detailed policy information |
-| /I | Check whether an IBAN is registered against a payee code |
-| T3 | Check the due date for a booking |
-| B4 | Check available bookings for an account code |
-| B4+8 | Update booking narratives |
-| B5 | Get booking breakdown where commission is involved |
-| 5 | Get booking breakdown including taxes, net premium and commission |
-
-If the employee asks for a process, numbered steps are allowed.
-
-If the employee asks something outside the verified information,
-be transparent rather than guessing.
+Do not invent information that is not provided or verified.
 
 ============================================================
-ACCURACY RULE
+ACCURACY
 ============================================================
 
-NEVER invent:
+Never invent:
 
 - AXA XL internal policies
 - Internal procedures
@@ -378,27 +484,22 @@ NEVER invent:
 
 Do not pretend to have access to internal systems or documents.
 
-If verified information is not available, clearly say so.
+If verified information is not available, say so clearly.
 
-Accuracy is more important than creating an answer that sounds
-confident.
+Accuracy is more important than making up an answer.
 
 ============================================================
 FINAL PRINCIPLE
 ============================================================
 
-Help the employee:
-
-1. Understand the concept.
-2. Understand its Credit Control context.
-3. Understand the relevant process, system or tool when verified.
-4. Know when an internal source or colleague may be required.
+Help the employee understand the concept, its Credit Control
+context, and the relevant verified process, system or tool.
 
 Always prioritize accuracy.
 `;
 
     // ============================================================
-    // CLEAN CONVERSATION HISTORY
+    // CONVERSATION HISTORY
     // ============================================================
 
     const recentHistory = Array.isArray(history)
@@ -412,10 +513,6 @@ Always prioritize accuracy.
           )
           .slice(-8)
       : [];
-
-    // ============================================================
-    // BUILD CHAT MESSAGES
-    // ============================================================
 
     const messages = [
       {
@@ -433,12 +530,12 @@ Always prioritize accuracy.
 
       {
         role: "user",
-        content: message.trim()
+        content: userMessage
       }
     ];
 
     // ============================================================
-    // HUGGING FACE API CALL
+    // HUGGING FACE REQUEST
     // ============================================================
 
     const response = await fetch(
@@ -453,7 +550,7 @@ Always prioritize accuracy.
 
         body: JSON.stringify({
           model: "openai/gpt-oss-120b",
-          messages: messages,
+          messages,
           temperature: 0.35,
           max_tokens: 700,
           stream: false
@@ -462,7 +559,7 @@ Always prioritize accuracy.
     );
 
     // ============================================================
-    // READ RESPONSE SAFELY
+    // READ HF RESPONSE
     // ============================================================
 
     const responseText = await response.text();
@@ -471,7 +568,7 @@ Always prioritize accuracy.
 
     try {
       data = JSON.parse(responseText);
-    } catch (parseError) {
+    } catch (error) {
       console.error(
         "Hugging Face returned non-JSON response:",
         responseText
@@ -483,7 +580,7 @@ Always prioritize accuracy.
     }
 
     // ============================================================
-    // HANDLE HUGGING FACE ERRORS
+    // HF ERROR
     // ============================================================
 
     if (!response.ok) {
@@ -502,7 +599,7 @@ Always prioritize accuracy.
     }
 
     // ============================================================
-    // GET AI ANSWER
+    // EXTRACT ANSWER
     // ============================================================
 
     const answer =
@@ -510,7 +607,7 @@ Always prioritize accuracy.
 
     if (!answer) {
       console.error(
-        "Hugging Face returned no answer:",
+        "Hugging Face returned an empty answer:",
         data
       );
 
@@ -524,14 +621,10 @@ Always prioritize accuracy.
     // ============================================================
 
     return res.status(200).json({
-      answer: answer
+      answer
     });
 
   } catch (error) {
-    // ============================================================
-    // FINAL ERROR HANDLER
-    // ============================================================
-
     console.error(
       "Credit Control Buddy server error:",
       error
