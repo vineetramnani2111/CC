@@ -15,157 +15,185 @@ export default async function handler(req, res) {
     }
 
     const userMessage = message.trim();
+
     const normalized = userMessage
       .toLowerCase()
+      .replace(/[?.,!;:]+/g, " ")
       .replace(/\s+/g, " ")
       .trim();
-
-    /*
-    ============================================================
-    ENVIRONMENT VARIABLES
-    ============================================================
-    */
 
     const HF_TOKEN = process.env.HF_TOKEN;
     const SERPER_API_KEY = process.env.SERPER_API_KEY;
 
-    if (!HF_TOKEN) {
-      console.error("HF_TOKEN is missing.");
+    /*
+    ============================================================
+    VERIFIED INTERNAL ANSWERS
+    ============================================================
+    */
 
-      return res.status(500).json({
-        error: "Hugging Face token is not configured in Vercel."
+    function internalAnswer(text) {
+      return res.status(200).json({
+        answer: text,
+        sources: [],
+        mode: "internal"
       });
     }
 
     /*
-    ============================================================
-    INTERNAL / AXA ROUTING
-    ============================================================
+    ------------------------------------------------------------
+    GENIUS COMMANDS
+    ------------------------------------------------------------
+    */
 
-    AXA / AXA XL automatically means internal knowledge.
+    if (
+      /\bm3\b/.test(normalized) &&
+      (
+        normalized.includes("genius") ||
+        normalized.includes("used") ||
+        normalized.includes("use") ||
+        normalized.includes("what") ||
+        normalized.includes("meaning")
+      )
+    ) {
+      return internalAnswer(
+        "M3 is used to check detailed information about a policy."
+      );
+    }
 
-    Certain internal system/tool names also automatically mean
-    internal knowledge even when the user doesn't type AXA.
+    if (
+      normalized.includes("/i") ||
+      (
+        normalized.includes("iban") &&
+        (
+          normalized.includes("genius") ||
+          normalized.includes("payee") ||
+          normalized.includes("command")
+        )
+      )
+    ) {
+      return internalAnswer(
+        "/I is used to check whether an IBAN is registered against a particular payee code."
+      );
+    }
+
+    if (
+      /\bt3\b/.test(normalized) &&
+      (
+        normalized.includes("genius") ||
+        normalized.includes("used") ||
+        normalized.includes("use") ||
+        normalized.includes("what")
+      )
+    ) {
+      return internalAnswer(
+        "T3 is used to check the due date for a booking."
+      );
+    }
+
+    if (
+      /\bb4\+8\b/.test(normalized)
+    ) {
+      return internalAnswer(
+        "B4+8 is used to update narratives on a booking."
+      );
+    }
+
+    if (
+      /\bb4\b/.test(normalized) &&
+      !normalized.includes("b4+8")
+    ) {
+      return internalAnswer(
+        "B4 is used to check what bookings are available on a particular account code."
+      );
+    }
+
+    if (
+      /\bb5\b/.test(normalized)
+    ) {
+      return internalAnswer(
+        "B5 is used to get the breakdown of a booking when commission is involved."
+      );
+    }
+
+    /*
+    ------------------------------------------------------------
+    GENERAL VERIFIED CREDIT CONTROL ANSWERS
+    ------------------------------------------------------------
+    */
+
+    if (
+      normalized.includes("overdue receivable") ||
+      normalized.includes("overdue receivables")
+    ) {
+      return internalAnswer(
+        "An overdue receivable is an amount that was due for payment but has not been received by the agreed due date. In Credit Control, it may require follow-up such as reminders, queries or escalation."
+      );
+    }
+
+    if (
+      normalized.includes("what is credit control") ||
+      normalized.includes("define credit control") ||
+      normalized.includes("credit control in insurance")
+    ) {
+      return internalAnswer(
+        "Credit Control in insurance is the process of monitoring and managing amounts owed to the insurer, particularly premiums and other receivables. The objective is to support timely collection and effective management of outstanding balances."
+      );
+    }
+
+    /*
+    ============================================================
+    INTERNAL KEYWORDS
+    ============================================================
     */
 
     const internalKeywords = [
       "axa",
       "axa xl",
-
-      // Genius / internal tools
       "genius",
-      "m3",
-      "/i",
-      "t3",
-      "b4",
-      "b4+8",
-      "b5",
-
-      // Internal systems
       "iqma",
       "smartmatch",
       "wins",
       "ibais",
       "theframe",
-
-      // Internal Credit Control activities
       "cash management",
       "cash identification",
       "cash booking",
       "split cash",
       "cash allocation",
       "payable management",
-      "reconcile bookings",
-      "settlement pay-out",
       "outstanding management",
-
-      // Internal process terminology
-      "soa",
-      "statement of accounts",
-      "journal allocation",
       "query assignment",
       "query reassignment",
-      "query closure"
+      "query closure",
+      "journal allocation",
+      "settlement pay",
+      "statement of accounts",
+      "soa"
     ];
 
-    const isInternalQuestion = internalKeywords.some((keyword) => {
-      if (keyword === "/i") {
-        return normalized.includes("/i");
-      }
-
-      return normalized.includes(keyword);
-    });
+    const isInternalQuestion = internalKeywords.some(
+      (keyword) => normalized.includes(keyword)
+    );
 
     /*
     ============================================================
-    VERIFIED GENIUS ANSWERS
-    ============================================================
-    */
-
-    const verifiedAnswers = {
-      "m3":
-        "M3 is used to check detailed information about a policy.",
-
-      "/i":
-        "/I is used to check whether an IBAN is registered against a particular payee code.",
-
-      "t3":
-        "T3 is used to check the due date for a booking.",
-
-      "b4":
-        "B4 is used to check what bookings are available on a particular account code.",
-
-      "b4+8":
-        "B4+8 is used to update narratives on a booking.",
-
-      "b5":
-        "B5 is used to get the breakdown of a booking when commission is involved.",
-
-      "5":
-        "5 is used to get the proper breakdown of a booking, including taxes, net premium and commission."
-    };
-
-    /*
-    ============================================================
-    DIRECT VERIFIED ANSWERS
-    ============================================================
-    */
-
-    if (verifiedAnswers[normalized]) {
-      return res.status(200).json({
-        answer: verifiedAnswers[normalized],
-        sources: []
-      });
-    }
-
-    /*
-    ============================================================
-    INTERNAL KNOWLEDGE
+    VERIFIED INTERNAL KNOWLEDGE
     ============================================================
     */
 
     const internalKnowledge = `
-============================================================
-CREDIT CONTROL BUDDY - VERIFIED INTERNAL KNOWLEDGE
-============================================================
+You are Credit Control Buddy, an internal AI assistant for
+AXA XL employees.
 
-You are Credit Control Buddy, an internal AI assistant designed
-to help AXA XL employees understand Credit Control, insurance,
-receivables, collections, premiums, Lines of Business (LOBs),
-insurance systems, Genius and related processes.
+VERIFIED INTERNAL KNOWLEDGE:
 
-The following information is verified internal/project
-knowledge.
-
-============================================================
 GENERAL CREDIT CONTROL
-============================================================
 
 Credit Control in insurance involves monitoring and managing
 amounts owed to the insurer, including premiums and other
 receivables.
 
-Typical Credit Control activities include:
+Typical activities include:
 
 - Monitoring receivables
 - Tracking overdue balances
@@ -183,15 +211,7 @@ Premiums are amounts payable for insurance coverage.
 
 A receivable represents an amount owed to the insurer.
 
-Credit Control is important because timely collection helps
-maintain healthy cash flow and supports effective management
-of outstanding balances.
-
-============================================================
 INSURANCE CONTEXT
-============================================================
-
-When relevant, explain the relationship between:
 
 Insured
 Policy
@@ -202,134 +222,89 @@ Credit Control
 Collection
 Cash received
 
-LOB means Line of Business.
+GENIUS
 
-Do not invent names or internal responsibilities.
+M3:
+Used to check detailed information about a policy.
 
-============================================================
-GENIUS - VERIFIED INFORMATION
-============================================================
-
-M3
-
-M3 is used to check detailed information about a policy.
-
-/I
-
-/I is used to check whether an IBAN is registered against a
+ /I:
+Used to check whether an IBAN is registered against a
 particular payee code.
 
-T3
+T3:
+Used to check the due date for a booking.
 
-T3 is used to check the due date for a booking.
-
-B4
-
-B4 is used to check what bookings are available on a particular
+B4:
+Used to check what bookings are available on a particular
 account code.
 
-B4+8
+B4+8:
+Used to update narratives on a booking.
 
-B4+8 is used to update narratives on a booking.
+B5:
+Used to get the breakdown of a booking when commission is
+involved.
 
-B5
-
-B5 is used to get the breakdown of a booking when commission
-is involved.
-
-5
-
-5 is used to get the proper breakdown of a booking, including:
-
+5:
+Used to get the proper breakdown of a booking, including:
 - Taxes
 - Net premium
 - Commission
 
-IMPORTANT:
+Do not invent any other Genius commands.
 
-Do NOT invent any other Genius commands.
-
-If asked about a Genius command that is not listed above,
-say that verified information is not currently available.
-
-============================================================
 INSURANCE SYSTEMS
-============================================================
 
-GENIUS
-
+GENIUS:
 Legacy XL business in all regions.
 
-WINS
-
+WINS:
 Program business in the Americas.
 
-IBAIS
-
+IBAIS:
 Brooklyn Underwriting business in APAC.
 
-theFrame
-
+theFrame:
 Lloyds business in all regions.
 
-Do not invent functionality for these systems.
-
-============================================================
-PAYABLE MANAGEMENT PROCESS
-============================================================
+PAYABLE MANAGEMENT
 
 1. Request Received
-
 Settlement / pay-out request is received via email.
 
 2. Reconcile Bookings
-
 Check supporting documentation and match bookings in the
 system.
 
 3. Initiation & Authorization
-
 Credit Controller initiates the payment and obtains the
 required authorization.
 
 4. Payment Processed
-
 Payment is successfully completed.
 
-============================================================
-CASH MANAGEMENT PROCESS
-============================================================
+CASH MANAGEMENT
 
 1. Cash Receipt
-
 Cash is credited to the bank account.
 
 2. Cash Identification
-
 Cash is identified against the relevant account code and
 policy by Credit Control.
 
 3. Cash Booking
-
 Cash is booked to the relevant account code.
 
 4. Split Cash
-
 In case of bulk cash, journals are split per insured.
 
 5. Allocation
-
 Matching items are allocated against the relevant booking.
 
 6. Query
-
 Pending items are queried with the relevant booking teams.
 
-============================================================
 SMARTMATCH
-============================================================
-
-Verified information:
 
 - Funds credited in bank accounts reflect in SmartMatch.
 - Receipts are received via email from the bank.
@@ -342,119 +317,73 @@ Verified information:
   can proceed.
 - Pending items are queried with relevant teams.
 
-============================================================
-RECONCILIATION PROCESS
-============================================================
+RECONCILIATION
 
 1. Receipt of SOA
-
-Statement of Accounts (SOA) is received from brokers/leaders.
+Statement of Accounts is received from brokers/leaders.
 
 2. Reconciliation
-
 SOA records are reconciled with our records and the relevant
 risk/policy is identified on the system.
 
 3. Raise Queries
-
 Differences are queried with the relevant teams, or agreement
 is given to settle when everything matches.
 
-============================================================
 OUTSTANDING MANAGEMENT
-============================================================
-
-Verified activities include:
 
 - Identify and track overdue balances.
 - Inform brokers about pending receivables.
 - Manage client reminders and communication.
 - Escalation process and NOC handling by ESS/onshore teams.
 
-============================================================
 IQMA
-============================================================
 
 IQMA stands for Integrated Query Management Application.
 
-Verified information:
-
 1. Query Auto Load
-
 Queries are auto-loaded from Genius upon journal creation.
 
 2. Query Assignment
-
 Queries are assigned to the relevant UA/MO/CLH etc.
 
 3. Query Reassignment
-
 Queries can be reassigned by UA/MO/CLH or Credit Control.
 
 4. Query Closure
-
 Queries are automatically closed once the journal is allocated.
 
-============================================================
-INTERNAL ACCURACY RULE
-============================================================
+IMPORTANT:
 
-Never invent:
-
-- AXA XL internal policies
-- AXA XL internal procedures
-- Internal contacts
-- Internal responsibilities
-- System functionality
-- Insured-specific information
-- LOB-specific information
-- Genius commands
-- Internal documentation
-
-If verified information is not available, say so clearly.
-
-Do not pretend to have access to internal AXA XL systems.
+Never invent AXA XL internal policies, procedures, contacts,
+responsibilities, system functionality, insured information,
+LOB-specific information or Genius commands.
 `;
 
     /*
     ============================================================
     WEB SEARCH
     ============================================================
-
-    Every NON-INTERNAL question is sent to Internet search.
-
-    Examples:
-
-    "What is insurance?"
-    "What is IFRS 17?"
-    "Capital of India?"
-    "Who is Prime Minister of India?"
-    "Latest insurance news?"
-    "What is Python?"
-
-    All can use web search.
     */
 
     async function searchWeb(query) {
       if (!SERPER_API_KEY) {
-        console.warn(
-          "SERPER_API_KEY is missing. Continuing without web search."
+        console.error(
+          "SERPER_API_KEY is missing from Vercel."
         );
 
         return [];
       }
 
       try {
-        const response = await fetch(
+        const searchResponse = await fetch(
           "https://google.serper.dev/search",
           {
             method: "POST",
-
             headers: {
               "X-API-KEY": SERPER_API_KEY,
               "Content-Type": "application/json"
             },
-
             body: JSON.stringify({
               q: query,
               num: 6
@@ -462,53 +391,51 @@ Do not pretend to have access to internal AXA XL systems.
           }
         );
 
-        const text = await response.text();
+        const responseText = await searchResponse.text();
 
         let data;
 
         try {
-          data = JSON.parse(text);
+          data = JSON.parse(responseText);
         } catch (error) {
           console.error(
-            "Serper returned invalid JSON:",
-            text
+            "SERPER INVALID JSON:",
+            responseText
           );
 
           return [];
         }
 
-        if (!response.ok) {
+        if (!searchResponse.ok) {
           console.error(
-            "Serper error:",
-            response.status,
+            "SERPER ERROR:",
+            searchResponse.status,
             data
           );
 
           return [];
         }
 
-        if (!Array.isArray(data?.organic)) {
-          return [];
-        }
-
-        return data.organic
-          .slice(0, 6)
-          .map((item) => ({
-            title: item?.title || "",
-            link: item?.link || "",
-            snippet: item?.snippet || "",
-            date: item?.date || ""
-          }))
-          .filter(
-            (item) =>
-              item.title &&
-              item.link &&
-              item.snippet
-          );
+        return Array.isArray(data?.organic)
+          ? data.organic
+              .slice(0, 6)
+              .map((item) => ({
+                title: item?.title || "",
+                link: item?.link || "",
+                snippet: item?.snippet || "",
+                date: item?.date || ""
+              }))
+              .filter(
+                (item) =>
+                  item.title &&
+                  item.link &&
+                  item.snippet
+              )
+          : [];
 
       } catch (error) {
         console.error(
-          "Web search failed:",
+          "WEB SEARCH FAILED:",
           error
         );
 
@@ -518,7 +445,7 @@ Do not pretend to have access to internal AXA XL systems.
 
     /*
     ============================================================
-    GET WEB RESULTS
+    GET WEB RESULTS FOR NON-INTERNAL QUESTIONS
     ============================================================
     */
 
@@ -530,35 +457,55 @@ Do not pretend to have access to internal AXA XL systems.
 
     /*
     ============================================================
-    FORMAT WEB RESULTS FOR AI
+    WEB CONTEXT
     ============================================================
     */
 
-    let webContext = "";
-
-    if (webResults.length > 0) {
-      webContext = webResults
-        .map(
-          (result, index) => `
+    const webContext =
+      webResults.length > 0
+        ? webResults
+            .map(
+              (result, index) => `
 SOURCE ${index + 1}
-
-Title:
-${result.title}
-
-URL:
-${result.link}
-
-Snippet:
-${result.snippet}
-
-Date:
-${result.date || "Not provided"}
+Title: ${result.title}
+URL: ${result.link}
+Snippet: ${result.snippet}
+Date: ${result.date || "Not available"}
 `
-        )
-        .join("\n");
-    } else {
-      webContext =
-        "No web search results were available.";
+            )
+            .join("\n")
+        : "No web results were retrieved.";
+
+    /*
+    ============================================================
+    HUGGING FACE
+    ============================================================
+    */
+
+    if (!HF_TOKEN) {
+      console.error("HF_TOKEN is missing.");
+
+      /*
+      If this is an Internet question and we have search
+      results, return those rather than completely failing.
+      */
+
+      if (!isInternalQuestion && webResults.length > 0) {
+        return res.status(200).json({
+          answer:
+            webResults[0].snippet ||
+            "I found information on the web, but the AI service is currently unavailable.",
+          sources: webResults.map((item) => ({
+            title: item.title,
+            link: item.link
+          })),
+          mode: "web-fallback"
+        });
+      }
+
+      return res.status(500).json({
+        error: "Hugging Face token is not configured."
+      });
     }
 
     /*
@@ -570,121 +517,80 @@ ${result.date || "Not provided"}
     const systemPrompt = `
 You are Credit Control Buddy.
 
-You are a professional, natural and conversational AI chatbot.
+Be professional, natural, conversational and accurate.
 
-============================================================
-ROUTING
-============================================================
-
-The backend has classified this question as:
+ROUTING:
 
 ${
   isInternalQuestion
-    ? "INTERNAL / AXA XL KNOWLEDGE"
-    : "GENERAL / INTERNET KNOWLEDGE"
+    ? "INTERNAL AXA XL MODE"
+    : "GENERAL INTERNET MODE"
 }
 
-============================================================
-INTERNAL / AXA XL MODE
-============================================================
+INTERNAL AXA XL MODE:
 
 Use the verified internal knowledge below.
 
-If the question concerns AXA, AXA XL, Genius, IQMA,
-SmartMatch, WINS, IBAIS, theFrame, or the verified internal
-processes, prioritize the verified internal information.
+AXA XL information has priority over general/public knowledge.
 
-Do NOT invent missing AXA XL information.
+Never invent internal information.
 
-Do NOT use public Internet information to contradict verified
-internal information.
+If the requested internal information is not verified,
+say that clearly.
 
-If something is not verified internally, say that you don't
-have verified internal information about it.
+GENERAL INTERNET MODE:
 
-============================================================
-GENERAL / INTERNET MODE
-============================================================
+Use the supplied Internet search results as the primary
+source for current/public information.
 
-Use the web search results below when they are available.
+You can answer general questions such as:
 
-These results are public Internet information.
+- General insurance
+- IFRS
+- Finance
+- Technology
+- Geography
+- Current affairs
+- Public figures
+- Companies
+- General knowledge
+- Everyday questions
 
-For current questions, prefer the web results.
+If search results are available, use them.
 
-For general insurance questions, use the web results.
+If search results are unavailable, answer from your general
+knowledge rather than simply refusing to answer.
 
-For general knowledge questions, use the web results.
+ANSWER STYLE:
 
-For questions where the search results are insufficient,
-you may use your general model knowledge, but do not claim
-that information came from the Internet if it did not.
+Answer directly.
 
-If web results are unavailable, still try to answer normally
-using your general knowledge.
+Do not unnecessarily create Step 1 / Step 2 / Step 3.
 
-============================================================
-ANSWER STYLE
-============================================================
+Use bullets or tables only when helpful.
 
-Answer naturally, like a knowledgeable colleague.
+Do not sound robotic.
 
-Be:
-
-- Clear
-- Professional
-- Conversational
-- Helpful
-- Concise
-- Accurate
-
-Answer the actual question first.
-
-Do not unnecessarily say:
-
-"Step 1"
-"Step 2"
-"Step 3"
-
-unless the user asks for a process.
-
-Use bullets when useful.
-
-Use tables when useful.
-
-Do not sound like a rigid FAQ bot.
-
-============================================================
-INTERNAL KNOWLEDGE
-============================================================
+VERIFIED INTERNAL KNOWLEDGE:
 
 ${internalKnowledge}
 
-============================================================
-WEB SEARCH RESULTS
-============================================================
+WEB SEARCH RESULTS:
 
 ${webContext}
 
-============================================================
-FINAL RULE
-============================================================
+ACCURACY:
 
-Never fabricate AXA XL internal information.
+Never fabricate AXA XL information.
 
 Never fabricate Genius commands.
 
 Never fabricate sources.
-
-If web search information is unavailable, do not pretend
-that you searched the Internet successfully.
-
-Give the best accurate answer available.
 `;
 
     /*
     ============================================================
-    CHAT HISTORY
+    HISTORY
     ============================================================
     */
 
@@ -700,12 +606,6 @@ Give the best accurate answer available.
           .slice(-8)
       : [];
 
-    /*
-    ============================================================
-    HUGGING FACE MESSAGE ARRAY
-    ============================================================
-    */
-
     const messages = [
       {
         role: "system",
@@ -717,7 +617,6 @@ Give the best accurate answer available.
           item.role === "assistant"
             ? "assistant"
             : "user",
-
         content: item.content.trim()
       })),
 
@@ -729,31 +628,60 @@ Give the best accurate answer available.
 
     /*
     ============================================================
-    HUGGING FACE
+    CALL HUGGING FACE
     ============================================================
     */
 
-    const response = await fetch(
-      "https://router.huggingface.co/v1/chat/completions",
-      {
-        method: "POST",
+    let aiResponse;
 
-        headers: {
-          Authorization: `Bearer ${HF_TOKEN}`,
-          "Content-Type": "application/json"
-        },
+    try {
+      aiResponse = await fetch(
+        "https://router.huggingface.co/v1/chat/completions",
+        {
+          method: "POST",
 
-        body: JSON.stringify({
-          model: "openai/gpt-oss-120b:fastest",
-          messages,
-          temperature: 0.35,
-          max_tokens: 800,
-          stream: false
-        })
+          headers: {
+            Authorization: `Bearer ${HF_TOKEN}`,
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            model: "openai/gpt-oss-120b:fastest",
+            messages,
+            temperature: 0.35,
+            max_tokens: 800,
+            stream: false
+          })
+        }
+      );
+    } catch (error) {
+      console.error(
+        "HUGGING FACE NETWORK ERROR:",
+        error
+      );
+
+      /*
+      WEB FALLBACK
+      */
+
+      if (!isInternalQuestion && webResults.length > 0) {
+        return res.status(200).json({
+          answer: webResults[0].snippet,
+          sources: webResults.map((item) => ({
+            title: item.title,
+            link: item.link
+          })),
+          mode: "web-fallback"
+        });
       }
-    );
 
-    const responseText = await response.text();
+      return res.status(502).json({
+        error:
+          "Unable to reach the AI service."
+      });
+    }
+
+    const responseText = await aiResponse.text();
 
     let data;
 
@@ -761,22 +689,59 @@ Give the best accurate answer available.
       data = JSON.parse(responseText);
     } catch (error) {
       console.error(
-        "Hugging Face returned invalid JSON:",
+        "HUGGING FACE INVALID JSON:",
         responseText
       );
 
+      if (!isInternalQuestion && webResults.length > 0) {
+        return res.status(200).json({
+          answer: webResults[0].snippet,
+          sources: webResults.map((item) => ({
+            title: item.title,
+            link: item.link
+          })),
+          mode: "web-fallback"
+        });
+      }
+
       return res.status(502).json({
         error:
-          "Hugging Face returned an invalid response."
+          "The AI service returned an invalid response."
       });
     }
 
-    if (!response.ok) {
+    /*
+    ============================================================
+    HUGGING FACE ERROR
+    ============================================================
+    */
+
+    if (!aiResponse.ok) {
       console.error(
-        "Hugging Face API error:",
-        response.status,
+        "HUGGING FACE ERROR:",
+        aiResponse.status,
         data
       );
+
+      /*
+      For a web question, do not completely fail if the
+      Internet search already worked.
+      */
+
+      if (!isInternalQuestion && webResults.length > 0) {
+        return res.status(200).json({
+          answer:
+            webResults[0].snippet ||
+            "I found information from the web, but the AI service is temporarily unavailable.",
+
+          sources: webResults.map((item) => ({
+            title: item.title,
+            link: item.link
+          })),
+
+          mode: "web-fallback"
+        });
+      }
 
       return res.status(502).json({
         error:
@@ -786,24 +751,42 @@ Give the best accurate answer available.
       });
     }
 
+    /*
+    ============================================================
+    EXTRACT ANSWER
+    ============================================================
+    */
+
     const answer =
       data?.choices?.[0]?.message?.content?.trim();
 
     if (!answer) {
       console.error(
-        "Hugging Face returned empty answer:",
+        "EMPTY HUGGING FACE ANSWER:",
         data
       );
 
+      if (!isInternalQuestion && webResults.length > 0) {
+        return res.status(200).json({
+          answer: webResults[0].snippet,
+
+          sources: webResults.map((item) => ({
+            title: item.title,
+            link: item.link
+          })),
+
+          mode: "web-fallback"
+        });
+      }
+
       return res.status(502).json({
-        error:
-          "The AI returned an empty response."
+        error: "The AI returned an empty answer."
       });
     }
 
     /*
     ============================================================
-    RETURN RESPONSE
+    FINAL RESPONSE
     ============================================================
     */
 
@@ -812,22 +795,26 @@ Give the best accurate answer available.
 
       sources: isInternalQuestion
         ? []
-        : webResults.map((result) => ({
-            title: result.title,
-            link: result.link
-          }))
+        : webResults.map((item) => ({
+            title: item.title,
+            link: item.link
+          })),
+
+      mode: isInternalQuestion
+        ? "internal"
+        : "web"
     });
 
   } catch (error) {
     console.error(
-      "Credit Control Buddy server error:",
+      "CREDIT CONTROL BUDDY ERROR:",
       error
     );
 
     return res.status(500).json({
       error:
         error?.message ||
-        "Unable to contact the AI service."
+        "Unable to process the request."
     });
   }
 }
