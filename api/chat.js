@@ -289,7 +289,81 @@ SMARTMATCH
 - Cash reflects in GENIUS the next day.
 - Full or partial details allow allocation.
 - Pending items are queried with the relevant teams.
+-----------------------------------------------------------
+GENIUS PAYMENT REQUEST — VERIFIED INTERNAL PROCEDURE
+------------------------------------------------------------
 
+Use the following procedure when an employee asks how to raise
+and document a payment request in GENIUS. Explain the steps
+clearly and do not invent missing steps or alternative workflows.
+STEP 1 — RAISE PAYMENT REQUEST
+Navigation:
+Accounts Menu → Account Ledger Maintenance
+- Select Allocation Type and enter Command 1.
+- Enter Branch.
+- Enter Account Code.
+- Enter Accounting CCY.
+- Enter Policy Number, if applicable.
+- Press Enter.
+- Enter Command 1 against the item requiring payment.
+- Press F20 — Payment Request.
+STEP 2 — ENTER PAYMENT DETAILS
+- Select Payment Type: SWT / OWT /ACH.
+- Enter Payee Code.
+- Bank details will auto-populate if they are mapped in GENIUS.
+- For non-CHF currencies, such as USD, EUR or GBP:
+  - Enter Bank Account.
+  - Use the ? command to select the required currency.
+- Press F9 and add the payment narrative.
+- Press Enter three times to submit.
+STEP 3 — VERIFY PAYMENT (KQ SCREEN)
+On the Enquiry Screen:
+- Enter B4 in Cmd Opt.
+- Enter Accounting CCY.
+- Enter 14 in Sort Order.
+- Locate the raised JNL at the top.
+- Enter KQ.
+- Capture a screenshot of the payment details.
+STEP 4 — DOCUMENTATION AND AUTHORIZATION
+- Email yourself the KQ screenshot.
+- Include the payment request email.
+- Include banking details and supporting documents.
+- Upload the payment file to IDOC.
+- Send it to the Authorizer for approval.
+IMPORTANT PAYMENT ACCURACY RULES
+- Bank details auto-populate only if mapped in GENIUS.
+- Policy Number is entered if applicable.
+- Submitting a payment request does not, by itself, prove that
+  payment has been processed or completed.
+- Sending a payment file for authorization does not mean approval
+  has already been granted.
+- Do not invent additional screens, fields, approvals, permissions,
+  or exception-handling procedures.
+
+ADDITIONAL IQMA KNOWLEDGE
+IQMA stands for Integrated Query Management Application.
+Purpose:
+IQMA is intended to provide one query-workflow solution to record,
+monitor, and track cash queries through to resolution across the
+global organization, regardless of the platform.
+UNALLOCATED CASH
+- Unallocated cash is automatically loaded into IQMA.
+- The query raised in IQMA is automatically assigned to the
+  respective handler or team.
+REMINDERS AND REASSIGNMENT
+- Email reminders can be sent automatically for issues.
+- Queries can be reassigned.
+QUERY CLOSURE AND REOPENING
+- Queries automatically close once the journal is allocated.
+- The supplied guidance also states that a query closes when its
+  status becomes allocated.
+- Deallocated queries reopen in the IQMA tool.
+IQMA ACCURACY RULES
+- Explain only the functionality listed above.
+- Do not invent reminder schedules, escalation timelines, statuses,
+  user permissions, or additional workflow steps.
+- If asked about an unverified IQMA feature, say that you do not
+  have verified information about that feature.
 ------------------------------------------------------------
 RECONCILIATION
 ------------------------------------------------------------
