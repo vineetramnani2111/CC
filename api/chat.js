@@ -14,9 +14,9 @@ export default async function handler(req, res) {
       });
     }
 
-    const HF_TOKEN = process.env.HF_TOKEN;
+    const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
-    if (!HF_TOKEN) {
+    if (!GROQ_API_KEY) {
       return res.status(500).json({
         error: "Hugging Face token is not configured."
       });
@@ -635,7 +635,7 @@ Never guess when verified information is not available.
         method: "POST",
 
         headers: {
-          "Authorization": `Bearer ${HF_TOKEN}`,
+          "Authorization": `Bearer ${GROQ_API_KEY}`,
           "Content-Type": "application/json"
         },
 
