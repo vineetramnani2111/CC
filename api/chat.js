@@ -663,7 +663,7 @@ Never guess when verified information is not available.
           model: "openrouter/free",
           messages,
           temperature: 0.35,
-          max_tokens: 400,
+          max_tokens: 700,
           stream: false
         })
       }
