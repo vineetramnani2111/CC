@@ -1,3 +1,4 @@
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({
@@ -14,13 +15,13 @@ export default async function handler(req, res) {
       });
     }
 
-    const GROQ_API_KEY = process.env.GROQ_API_KEY;
+    const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
-    if (!GROQ_API_KEY) {
-      console.error("GROQ_API_KEY is not configured.");
+    if (!OPENROUTER_API_KEY) {
+      console.error("OPENROUTER_API_KEY is not configured.");
 
       return res.status(500).json({
-        error: "Groq API key is not configured."
+        error: "OpenRouter API key is not configured."
       });
     }
 
@@ -621,6 +622,7 @@ Always prioritize:
 Never guess when verified information is not available.
 `;
 
+    // Keep only the latest four history entries to reduce token usage.
     const recentHistory = Array.isArray(history)
       ? history
           .filter(
@@ -629,7 +631,7 @@ Never guess when verified information is not available.
               typeof item === "object" &&
               typeof item.content === "string"
           )
-          .slice(-8)
+          .slice(-4)
       : [];
 
     const messages = [
@@ -650,15 +652,16 @@ Never guess when verified information is not available.
     ];
 
     const response = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
+      "https://openrouter.ai/api/v1/chat/completions",
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${GROQ_API_KEY}`,
-          "Content-Type": "application/json"
+          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json",
+          "X-OpenRouter-Title": "Credit Control Buddy"
         },
         body: JSON.stringify({
-          model: "openai/gpt-oss-20b",
+          model: "openrouter/free",
           messages,
           temperature: 0.35,
           max_tokens: 700,
@@ -670,17 +673,31 @@ Never guess when verified information is not available.
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Groq API error:", response.status, data);
+      console.error("OpenRouter API error:", response.status, data);
+
+      if (response.status === 429) {
+        return res.status(429).json({
+          error:
+            "The free AI service is busy or its rate limit has been reached. Please wait and try again."
+        });
+      }
+
+      if (response.status === 401 || response.status === 403) {
+        return res.status(502).json({
+          error:
+            "OpenRouter authentication failed. Please check the API key configuration."
+        });
+      }
 
       return res.status(502).json({
-        error: "Groq request failed. Please try again later."
+        error: "OpenRouter request failed. Please try again later."
       });
     }
 
     const answer = data?.choices?.[0]?.message?.content?.trim();
 
     if (!answer) {
-      console.error("Groq returned no answer:", data);
+      console.error("OpenRouter returned no answer:", data);
 
       return res.status(502).json({
         error: "The AI returned an empty response."
