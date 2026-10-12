@@ -696,7 +696,10 @@ Never guess when verified information is not available.
     const answer = data?.choices?.[0]?.message?.content?.trim();
 
     if (!answer) {
-      console.error("OpenRouter returned no answer:", data);
+      console.error( 
+        "OpenRouter response details:",
+        JSON.stringify(data.choices?.[0]?.message, null, 2
+                      );
 
       return res.status(502).json({
         error: "The AI returned an empty response."
