@@ -8,19 +8,17 @@ export default async function handler(req, res) {
   try {
     const { message, history = [] } = req.body || {};
 
-    if (typeof message !== "string" || !message.trim()) {
+    if (!message || !message.trim()) {
       return res.status(400).json({
         error: "Message is required"
       });
     }
 
-    const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+    const HF_TOKEN = process.env.HF_TOKEN;
 
-    if (!OPENROUTER_API_KEY) {
-      console.error("OPENROUTER_API_KEY is not configured.");
-
+    if (!HF_TOKEN) {
       return res.status(500).json({
-        error: "OpenRouter API key is not configured."
+        error: "Hugging Face token is not configured."
       });
     }
 
@@ -154,6 +152,7 @@ Provides a proper breakdown of a booking, including:
 - Commission
 
 ------------------------------------------------------------
+
 GENIUS ACCURACY RULES
 ------------------------------------------------------------
 
@@ -290,20 +289,16 @@ SMARTMATCH
 - Cash reflects in GENIUS the next day.
 - Full or partial details allow allocation.
 - Pending items are queried with the relevant teams.
-
-------------------------------------------------------------
+-----------------------------------------------------------
 GENIUS PAYMENT REQUEST — VERIFIED INTERNAL PROCEDURE
 ------------------------------------------------------------
 
 Use the following procedure when an employee asks how to raise
 and document a payment request in GENIUS. Explain the steps
 clearly and do not invent missing steps or alternative workflows.
-
 STEP 1 — RAISE PAYMENT REQUEST
-
 Navigation:
 Accounts Menu → Account Ledger Maintenance
-
 - Select Allocation Type and enter Command 1.
 - Enter Branch.
 - Enter Account Code.
@@ -312,10 +307,8 @@ Accounts Menu → Account Ledger Maintenance
 - Press Enter.
 - Enter Command 1 against the item requiring payment.
 - Press F20 — Payment Request.
-
 STEP 2 — ENTER PAYMENT DETAILS
-
-- Select Payment Type: SWT / OWT / ACH.
+- Select Payment Type: SWT / OWT /ACH.
 - Enter Payee Code.
 - Bank details will auto-populate if they are mapped in GENIUS.
 - For non-CHF currencies, such as USD, EUR or GBP:
@@ -323,9 +316,7 @@ STEP 2 — ENTER PAYMENT DETAILS
   - Use the ? command to select the required currency.
 - Press F9 and add the payment narrative.
 - Press Enter three times to submit.
-
 STEP 3 — VERIFY PAYMENT (KQ SCREEN)
-
 On the Enquiry Screen:
 - Enter B4 in Cmd Opt.
 - Enter Accounting CCY.
@@ -333,17 +324,13 @@ On the Enquiry Screen:
 - Locate the raised JNL at the top.
 - Enter KQ.
 - Capture a screenshot of the payment details.
-
 STEP 4 — DOCUMENTATION AND AUTHORIZATION
-
 - Email yourself the KQ screenshot.
 - Include the payment request email.
 - Include banking details and supporting documents.
 - Upload the payment file to IDOC.
 - Send it to the Authorizer for approval.
-
 IMPORTANT PAYMENT ACCURACY RULES
-
 - Bank details auto-populate only if mapped in GENIUS.
 - Policy Number is entered if applicable.
 - Submitting a payment request does not, by itself, prove that
@@ -353,39 +340,30 @@ IMPORTANT PAYMENT ACCURACY RULES
 - Do not invent additional screens, fields, approvals, permissions,
   or exception-handling procedures.
 
-------------------------------------------------------------
 ADDITIONAL IQMA KNOWLEDGE
-------------------------------------------------------------
-
 IQMA stands for Integrated Query Management Application.
-
 Purpose:
 IQMA is intended to provide one query-workflow solution to record,
 monitor, and track cash queries through to resolution across the
 global organization, regardless of the platform.
-
 UNALLOCATED CASH
 - Unallocated cash is automatically loaded into IQMA.
 - The query raised in IQMA is automatically assigned to the
   respective handler or team.
-
 REMINDERS AND REASSIGNMENT
 - Email reminders can be sent automatically for issues.
 - Queries can be reassigned.
-
 QUERY CLOSURE AND REOPENING
 - Queries automatically close once the journal is allocated.
 - The supplied guidance also states that a query closes when its
   status becomes allocated.
 - Deallocated queries reopen in the IQMA tool.
-
 IQMA ACCURACY RULES
 - Explain only the functionality listed above.
 - Do not invent reminder schedules, escalation timelines, statuses,
   user permissions, or additional workflow steps.
 - If asked about an unverified IQMA feature, say that you do not
   have verified information about that feature.
-
 ------------------------------------------------------------
 RECONCILIATION
 ------------------------------------------------------------
@@ -422,7 +400,6 @@ information about that specific internal process.
 
 Do not present general insurance knowledge as AXA XL-specific
 internal knowledge.
-
 ------------------------------------------------------------
 ACCURACY IS EXTREMELY IMPORTANT
 ------------------------------------------------------------
@@ -621,7 +598,6 @@ Always prioritize:
 Never guess when verified information is not available.
 `;
 
-    // Keep only the latest four history entries to reduce token usage.
     const recentHistory = Array.isArray(history)
       ? history
           .filter(
@@ -630,7 +606,7 @@ Never guess when verified information is not available.
               typeof item === "object" &&
               typeof item.content === "string"
           )
-          .slice(-4)
+          .slice(-8)
       : [];
 
     const messages = [
@@ -640,7 +616,10 @@ Never guess when verified information is not available.
       },
 
       ...recentHistory.map(item => ({
-        role: item.role === "assistant" ? "assistant" : "user",
+        role:
+          item.role === "assistant"
+            ? "assistant"
+            : "user",
         content: item.content.trim()
       })),
 
@@ -651,16 +630,17 @@ Never guess when verified information is not available.
     ];
 
     const response = await fetch(
-      "https://openrouter.ai/api/v1/chat/completions",
+      "https://router.huggingface.co/v1/chat/completions",
       {
         method: "POST",
+
         headers: {
-          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
-          "Content-Type": "application/json",
-          "X-OpenRouter-Title": "Credit Control Buddy"
+          "Authorization": `Bearer ${HF_TOKEN}`,
+          "Content-Type": "application/json"
         },
+
         body: JSON.stringify({
-          model: "openrouter/free",
+          model: "openai/gpt-oss-120b:fastest",
           messages,
           temperature: 0.35,
           max_tokens: 700,
@@ -672,44 +652,34 @@ Never guess when verified information is not available.
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("OpenRouter API error:", response.status, data);
+      console.error(
+        "Hugging Face error:",
+        data
+      );
 
-      if (response.status === 429) {
-        return res.status(429).json({
-          error:
-            "The free AI service is busy or its rate limit has been reached. Please wait and try again."
-        });
-      }
-
-      if (response.status === 401 || response.status === 403) {
-        return res.status(502).json({
-          error:
-            "OpenRouter authentication failed. Please check the API key configuration."
-        });
-      }
-
-      return res.status(502).json({
-        error: "OpenRouter request failed. Please try again later."
+      return res.status(500).json({
+        error: "Hugging Face request failed."
       });
     }
 
-    const answer = data?.choices?.[0]?.message?.content?.trim();
+    const answer =
+      data?.choices?.[0]?.message?.content?.trim();
 
     if (!answer) {
-      console.error( 
-        "OpenRouter response details:",
-        JSON.stringify(data.choices?.[0]?.message, null, 2
-    );
-
-      return res.status(502).json({
+      return res.status(500).json({
         error: "The AI returned an empty response."
       });
     }
 
-    return res.status(200).json({ answer });
+    return res.status(200).json({
+      answer
+    });
 
   } catch (error) {
-    console.error("Server error:", error);
+    console.error(
+      "Server error:",
+      error
+    );
 
     return res.status(500).json({
       error: "Unable to contact the AI service."
