@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "Method not allowed"
@@ -685,4 +685,4 @@ Never guess when verified information is not available.
       error: "Unable to contact the AI service."
     });
   }
-}
+},
